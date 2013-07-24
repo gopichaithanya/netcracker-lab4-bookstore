@@ -1,0 +1,95 @@
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+		  http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+         version="2.5">
+
+    <display-name>Book Store web application that uses EJB as business layer</display-name>
+
+        <!--External references-->
+    <ejb-ref>
+        <ejb-ref-name>genre</ejb-ref-name>
+        <ejb-ref-type>Entity</ejb-ref-type>
+        <home>com.netcracker.ejb.entity.GenreHome</home>
+        <remote>com.netcracker.ejb.entity.GenreRemote</remote>
+        <mapped-name>java:jboss/exported/ear-1.0/ejbPart/GenreBean!com.netcracker.ejb.entity.GenreHome</mapped-name>
+    </ejb-ref>
+
+    <ejb-ref>
+        <ejb-ref-name>author</ejb-ref-name>
+        <ejb-ref-type>Entity</ejb-ref-type>
+        <home>com.netcracker.ejb.entity.AuthorHome</home>
+        <remote>com.netcracker.ejb.entity.AuthorRemote</remote>
+        <mapped-name>java:jboss/exported/ear-1.0/ejbPart/AuthorBean!com.netcracker.ejb.entity.AuthorHome</mapped-name>
+    </ejb-ref>
+
+    <servlet>
+        <servlet-name>testBean</servlet-name>
+        <servlet-class>TestServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>testBean</servlet-name>
+        <url-pattern>/test</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>addAuthor</servlet-name>
+        <servlet-class>com.netcracker.servlets.AddAuthor</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>addAuthor</servlet-name>
+        <url-pattern>/addAuthor</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>deleteAuthor</servlet-name>
+        <servlet-class>com.netcracker.servlets.DeleteAuthor</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>deleteAuthor</servlet-name>
+        <url-pattern>/deleteAuthor</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>authorization</servlet-name>
+        <servlet-class>com.netcracker.servlets.Authorization</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>authorization</servlet-name>
+        <url-pattern>/auth</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>addBook</servlet-name>
+        <servlet-class>com.netcracker.servlets.AddBook</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>addBook</servlet-name>
+        <url-pattern>/addBook</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>findBook</servlet-name>
+        <servlet-class>com.netcracker.servlets.FindBook</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>findBook</servlet-name>
+        <url-pattern>/find</url-pattern>
+    </servlet-mapping>
+
+
+
+    <servlet>
+        <servlet-name>MainPageHandler</servlet-name>
+        <servlet-class>com.netcracker.servlets.MainPageHandler</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>MainPageHandler</servlet-name>
+        <url-pattern>/books</url-pattern>
+    </servlet-mapping>
+
+    <welcome-file-list>
+        <welcome-file>/books</welcome-file>
+    </welcome-file-list>
+
+</web-app>

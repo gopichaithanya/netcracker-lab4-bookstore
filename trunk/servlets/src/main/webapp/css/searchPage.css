@@ -1,0 +1,74 @@
+#searchBar table {
+    border: 1px solid #000000;
+}
+
+#searchBar table td {
+    border: 1px solid #000000;
+}
+
+#searchBar table th {
+    border-left: 1px solid #000000;
+    border-right: 1px solid #000000;
+}
+
+#searchInfo {
+    margin-top: 10px;
+}
+
+#searchRequest {
+    margin-top: 10px;
+}
+
+#searchRequest li {
+    color: blue;
+    font-size: 20px;
+}
+
+#searchRequest li span {
+    font-family: cursive;
+    text-decoration: underline;
+    color: green;
+}
+
+
+
+#searchResults {
+    margin-top: 50px;
+    margin-left: 300px;
+}
+
+#searchResults table {
+    border: 1px solid #000000;
+    border-radius: 5px;
+}
+
+
+.dataCol {
+    height: 100px;
+    width: 1000px;
+    box-shadow: none;
+    border-bottom: 1px solid #000000;
+    text-align: center;
+    text-decoration: underline;
+}
+
+.imgCol {
+    height: 100px;
+    width: 100px;
+    border-right: 1px solid #000000;
+    border-bottom: 1px solid #000000;
+}
+
+td img {
+    height: 100px;
+    width: 100px;
+    margin-left: 3px;
+}
+
+li {
+    color: red;
+}
+
+#footer {
+    margin-top: 15px;
+}

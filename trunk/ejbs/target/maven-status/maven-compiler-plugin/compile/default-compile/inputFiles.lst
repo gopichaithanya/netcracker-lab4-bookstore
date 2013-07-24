@@ -1,0 +1,11 @@
+D:\Lab4\lab4\ejbs\src\main\java\com\netcracker\ejb\entity\GenrePk.java
+D:\Lab4\lab4\ejbs\src\main\java\com\netcracker\ejb\entity\GenreHome.java
+D:\Lab4\lab4\ejbs\src\main\java\com\netcracker\ejb\entity\AuthorBean.java
+D:\Lab4\lab4\ejbs\src\main\java\com\netcracker\ejb\entity\AuthorHome.java
+D:\Lab4\lab4\ejbs\src\main\java\com\netcracker\ejb\entity\GenreBean.java
+D:\Lab4\lab4\ejbs\src\main\java\com\netcracker\ejb\entity\GenreRemote.java
+D:\Lab4\lab4\ejbs\src\main\java\com\netcracker\utils\DBUtils.java
+D:\Lab4\lab4\ejbs\src\main\java\com\netcracker\ejb\entity\AuthorPK.java
+D:\Lab4\lab4\ejbs\src\main\java\com\netcracker\exceptions\DataAccessException.java
+D:\Lab4\lab4\ejbs\src\main\java\com\netcracker\helper\ThinEntityWrapper.java
+D:\Lab4\lab4\ejbs\src\main\java\com\netcracker\ejb\entity\AuthorRemote.java
