@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ejb-jar xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+		  http://java.sun.com/xml/ns/javaee/ejb-jar_3_0.xsd"
+         version="3.0">
+
+    <enterprise-beans>
+        <entity>
+            <description>Represent Genre entity</description>
+            <ejb-name>GenreBean</ejb-name>
+            <home>com.netcracker.ejb.entity.GenreHome</home>
+            <remote>com.netcracker.ejb.entity.GenreRemote</remote>
+            <ejb-class>com.netcracker.ejb.entity.GenreBean</ejb-class>
+            <persistence-type>Bean</persistence-type>
+            <prim-key-class>java.lang.Integer</prim-key-class>
+            <!--com.netcracker.ejb.entity.GenrePk-->
+            <reentrant>false</reentrant>
+            <resource-ref>
+                <description>Reference to the bookstore database</description>
+                <res-ref-name>datasources/booksStoreDB</res-ref-name>
+                <res-auth>Container</res-auth>
+                <mapped-name>java:jboss/datasources/bookStoreDB</mapped-name>
+            </resource-ref>
+        </entity>
+        <entity>
+            <description>Represent Author entity</description>
+            <ejb-name>AuthorBean</ejb-name>
+            <home>com.netcracker.ejb.entity.AuthorHome</home>
+            <remote>com.netcracker.ejb.entity.AuthorRemote</remote>
+            <ejb-class>com.netcracker.ejb.entity.AuthorBean</ejb-class>
+            <persistence-type>Bean</persistence-type>
+            <prim-key-class>java.lang.Integer</prim-key-class>
+            <!--com.netcracker.ejb.entity.Author.AuthorPk-->
+            <reentrant>false</reentrant>
+            <resource-ref>
+                <description>Reference to the bookstore database</description>
+                <res-ref-name>datasources/booksStoreDB</res-ref-name>
+                <res-auth>Container</res-auth>
+                <mapped-name>java:jboss/datasources/bookStoreDB</mapped-name>
+            </resource-ref>
+        </entity>
+        <entity>
+            <description>Represent Publisher entity</description>
+            <ejb-name>PublisherBean</ejb-name>
+            <home>com.netcracker.ejb.entity.PublisherHome</home>
+            <remote>com.netcracker.ejb.entity.PublisherRemote</remote>
+            <ejb-class>com.netcracker.ejb.entity.PublisherBean</ejb-class>
+            <persistence-type>Bean</persistence-type>
+            <prim-key-class>java.lang.Integer</prim-key-class>
+            <!--com.netcracker.ejb.entity.Author.AuthorPk-->
+            <reentrant>false</reentrant>
+            <resource-ref>
+                <description>Reference to the bookstore database</description>
+                <res-ref-name>datasources/booksStoreDB</res-ref-name>
+                <res-auth>Container</res-auth>
+                <mapped-name>java:jboss/datasources/bookStoreDB</mapped-name>
+            </resource-ref>
+        </entity>
+        <!--<entity>-->
+            <!--<description>Represent Book entity</description>-->
+            <!--<ejb-name>BookBean</ejb-name>-->
+            <!--<home>com.netcracker.ejb.entity.BookHome</home>-->
+            <!--<remote>com.netcracker.ejb.entity.BookRemote</remote>-->
+            <!--<ejb-class>com.netcracker.ejb.entity.BookBean</ejb-class>-->
+            <!--<persistence-type>Bean</persistence-type>-->
+            <!--<prim-key-class>java.lang.Integer</prim-key-class>-->
+            <!--&lt;!&ndash;com.netcracker.ejb.entity.Author.AuthorPk&ndash;&gt;-->
+            <!--<reentrant>false</reentrant>-->
+            <!--<resource-ref>-->
+                <!--<description>Reference to the bookstore database</description>-->
+                <!--<res-ref-name>datasources/booksStoreDB</res-ref-name>-->
+                <!--<res-auth>Container</res-auth>-->
+                <!--<mapped-name>java:jboss/datasources/bookStoreDB</mapped-name>-->
+            <!--</resource-ref>-->
+        <!--</entity>-->
+
+
+    </enterprise-beans>
+</ejb-jar>

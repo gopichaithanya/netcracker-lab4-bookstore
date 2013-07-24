@@ -1,0 +1,61 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.netcracker</groupId>
+        <artifactId>root</artifactId>
+        <version>1.0</version>
+    </parent>
+
+    <artifactId>ear</artifactId>
+    <packaging>ear</packaging>
+    <version>1.0</version>
+    <name>ear assembly</name>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.netcracker</groupId>
+            <artifactId>webPart</artifactId>
+            <version>1.0</version>
+            <type>war</type>
+        </dependency>
+        <dependency>
+            <groupId>com.netcracker</groupId>
+            <artifactId>ejbPart</artifactId>
+            <version>1.0</version>
+            <type>ejb</type>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-ear-plugin</artifactId>
+                <version>2.4.1</version>
+                <configuration>
+                    <modules>
+                        <webModule>
+                            <groupId>com.netcracker</groupId>
+                            <artifactId>webPart</artifactId>
+                            <bundleFileName>webPart.war</bundleFileName>
+                            <contextRoot>/bookStore</contextRoot>
+                        </webModule>
+                        <ejbModule>
+                            <groupId>com.netcracker</groupId>
+                            <artifactId>ejbPart</artifactId>
+                            <bundleFileName>ejbPart.jar</bundleFileName>
+                        </ejbModule>
+                    </modules>
+                    <outputDirectory>${deployment.dir}</outputDirectory>
+                    <!--<archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                        </manifest>
+                    </archive>-->
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
