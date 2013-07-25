@@ -18,11 +18,11 @@ import java.util.List;
  */
 public interface AuthorHome extends EJBHome {
 
-    public AuthorRemote create(Integer authorId, String firstName, String lastName)
+    public AuthorRemote create(String firstName, String lastName)
             throws CreateException, RemoteException;
 
-//    public AuthorRemote remove(Integer authorId)
-//            throws FinderException, RemoteException;
+    public AuthorRemote findByName(String firstName, String lastName)
+            throws RemoteException, FinderException;
 
     public AuthorRemote findByPrimaryKey(Integer authorPk)
             throws FinderException, RemoteException, DataAccessException;
@@ -33,5 +33,9 @@ public interface AuthorHome extends EJBHome {
 
     public List getAuthorsAmount()
             throws RemoteException, DataAccessException;
+
+    public boolean isAuthorExist(String firstName, String lastName)
+            throws RemoteException, FinderException;
+
 
 }

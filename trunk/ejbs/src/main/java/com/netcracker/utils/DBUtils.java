@@ -159,6 +159,38 @@ public class DBUtils {
         }
     }
 
+    /**
+     * This method creates entity record in the database and returns its id.
+     *
+     * @param connection
+     * @param sqlQuery      insert query
+     * @param params        query params
+     * @return              id of newly created entity
+     *
+     * @throws SQLException
+     */
+    public static int executeInsert(Connection connection, String sqlQuery, Object[] params) throws SQLException {
+        if (connection == null || sqlQuery == null || params == null || params.length == 0) {
+            throw new IllegalArgumentException("All parameters must be not empty.");
+        }
+
+        PreparedStatement prStm = null;
+        ResultSet rs = null;
+        try {
+
+            prStm = substituteParams(connection.prepareStatement(sqlQuery, Statement.RETURN_GENERATED_KEYS), params);
+            prStm.executeUpdate();
+            rs = prStm.getGeneratedKeys();
+            rs.next();
+            return rs.getInt(1);
+
+        } finally {
+            cleanup(rs, prStm, connection);
+        }
+    }
+
+
+
 
 
 

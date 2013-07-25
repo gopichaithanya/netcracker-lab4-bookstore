@@ -1,6 +1,7 @@
 package com.netcracker.helper;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class ThinEntityWrapper implements Serializable {
     private String id;
@@ -20,4 +21,6 @@ public class ThinEntityWrapper implements Serializable {
     public String getInfo() {
         return info;
     }
+
+
 }

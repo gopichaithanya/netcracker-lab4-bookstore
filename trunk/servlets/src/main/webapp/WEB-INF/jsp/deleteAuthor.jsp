@@ -11,7 +11,7 @@
 
 <body>
 <div id="header">
-    <h1><a href="bookStore">Books Store WEB site</a></h1>
+    <h1><a href="books">Books Store WEB site</a></h1>
 </div>
 
 <div id="navigation">
@@ -23,41 +23,24 @@
 <div id="content">
     <div>
         <FORM METHOD=POST>
-            <p>
-                <c:if test="${requestScope.error}">
-            <h2 style="font-family: cursive; color: red"> Please, choose existing author from the list.  </h2>
-            </c:if>
-            </p>
-            <h2 style="font-family: cursive; color: green">Enter author parameters:</h2>
+            <h2 style="font-family: cursive; color: green">Select author from the list:</h2>
             <table>
                 <tr>
-                    <td>author's first name:</td>
+                    <td>author's  name:</td>
                     <td>
-                        <select name="firstName">
+                        <select name="Id">
                             <c:forEach items="${requestScope.authorsList}" var="author">
-                                <option value="${author.firstName}">
-                                        ${author.firstName}
+                                <option value="${author.id}">
+                                        ${author.info}
                                 </option>
                             </c:forEach>
                         </select>
                     <td>
                 </tr>
-                <tr>
-                    <td>author's last name:</td>
-                    <td>
-                        <select name="lastName">
-                            <c:forEach items="${requestScope.authorsList}" var="author">
-                                <option value="${author.lastName}">
-                                        ${author.lastName}
-                                </option>
-                            </c:forEach>
-                        </select>
-                    </td>
-                </tr>
+
             </table>
             <br>
             <input type="submit" value="Delete Author">
-            <input type="reset" value="Reset" style="margin-left: 10px">
         </FORM>
     </div>
 </div>

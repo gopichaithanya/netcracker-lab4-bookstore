@@ -44,6 +44,9 @@ public class GenreBean implements EntityBean {
 
             // Filling the result
             while (idsIter.hasNext() && namesIter.hasNext()) {
+//                ArrayList<String> allGenresInfo = new ArrayList<String>();
+//                allGenresInfo.add(namesIter.next().toString());
+
                 result.add(new ThinEntityWrapper(idsIter.next().toString(), namesIter.next().toString()));
             }
 
@@ -106,10 +109,10 @@ public class GenreBean implements EntityBean {
         this.genreId = genreId;
         this.genreName = genreName;
 
-        final String sqlQuery = "INSERT INTO genres VALUES (?, ?)";
+        final String sqlQuery = "INSERT INTO genres (name) VALUES (?)";
 
         try {
-            int affectedRows = DBUtils.executeUpdate(getConnection(), sqlQuery, new Object[] {genreId, genreName});
+            int affectedRows = DBUtils.executeInsert(getConnection(), sqlQuery, new Object[] {genreId, genreName});
 
             // If creation procedure has been performed successfully
             if (affectedRows != 0) {

@@ -32,6 +32,7 @@ public class AuthorBean implements EntityBean{
         return authorId;
     }
 
+
     public String getAuthorFirstName() {
         System.out.println("------- [Author] getAuthorFirstName");
         return firstName;
@@ -61,7 +62,12 @@ public class AuthorBean implements EntityBean{
             Iterator lastNamesIter = lastNames.iterator();
 
             // Filling the result
+
             while (idsIter.hasNext() && firstNamesIter.hasNext() && lastNamesIter.hasNext()) {
+//                ArrayList<String> allAuthorInfo = new ArrayList<String>();
+//                allAuthorInfo.add(firstNamesIter.next().toString());
+//                allAuthorInfo.add(lastNamesIter.next().toString());
+
                 //TODO: error may occur in this place
                 result.add(new ThinEntityWrapper(idsIter.next().toString(), firstNamesIter.next().toString() + " " + lastNamesIter.next().toString()));
             }
@@ -82,19 +88,19 @@ public class AuthorBean implements EntityBean{
                                      // Create and remove methods
 
 
-    public Integer ejbCreate(Integer authorId, String firstName, String lastName) throws CreateException {
+    public Integer ejbCreate(String firstName, String lastName) throws CreateException {
         System.out.println("-------[Author] ejbCreate");
-        this.authorId = authorId;
         this.firstName = firstName;
         this.lastName = lastName;
 
-        final String sqlQuery = "INSERT INTO authors VALUES (?, ?, ?)";
+        final String sqlQuery = "INSERT INTO authors (firstName, lastName) VALUES (?, ?)";
 
         try {
-            int affectedRows = DBUtils.executeUpdate(getConnection(), sqlQuery, new Object[] {authorId, firstName, lastName});
+            int authorId = DBUtils.executeInsert(getConnection(), sqlQuery, new Object[] {firstName, lastName});
+            this.authorId = authorId;
 
             // If creation procedure has been performed successfully
-            if (affectedRows != 0) {
+            if (authorId != 0) {
                 return new Integer(authorId);
             } else {
                 throw new CreateException("Unsuccessful Author bean creation");
@@ -107,19 +113,23 @@ public class AuthorBean implements EntityBean{
     }
 
 
-    public void ejbPostCreate(Integer authorId, String firstName, String lastName) throws CreateException {
+    public void ejbPostCreate(String firstName, String lastName) throws CreateException {
         System.out.println("------- [Author] ejbPostCreate");
     }
 
 
-    @Override
-    public void ejbRemove() throws RemoveException, EJBException {
+    public void ejbRemove() throws RemoveException {
         System.out.println("-------[Author] ejbRemove");
-        Integer authorPk = (Integer) context.getPrimaryKey();
-        final String sqlQuery = "DELETE FROM authors WHERE authorId = ?";
+        Integer authorPk = (Integer)context.getPrimaryKey();
+
+        final String sqlQuery1 = "DELETE FROM balink WHERE authorId= ?";
+        final String sqlQuery2 = "DELETE FROM authors WHERE authorId= ?";
+
         try {
-            int affectedRows = DBUtils.executeUpdate(getConnection(), sqlQuery, new Object[]{authorPk.intValue()});
-            if (affectedRows == 0) {
+
+            int affectedRows1 = DBUtils.executeUpdate(getConnection(), sqlQuery1, new Object[]{authorPk.intValue()});
+            int affectedRows2 = DBUtils.executeUpdate(getConnection(), sqlQuery2, new Object[]{authorPk.intValue()});
+            if (affectedRows2 == 0 && affectedRows1 == 0) {
                 throw new RemoveException("Author bean hasn't been removed");
             }
         } catch (SQLException e) {
@@ -160,6 +170,7 @@ public class AuthorBean implements EntityBean{
         System.out.println("------- [Author] unsetEntityContext");
         context = null;
     }
+
 
     @Override
     public void ejbActivate() throws EJBException {
@@ -213,5 +224,47 @@ public class AuthorBean implements EntityBean{
         Context ctx = new InitialContext();
         DataSource ds =  (DataSource) ctx.lookup("java:comp/env/datasources/booksStoreDB");
         return ds.getConnection();
+    }
+
+    // For checking existing author in the database
+
+    /**
+     * Figure out is author with such first and last name already exist or not.
+     *
+     * @param firstName         author's first name
+     * @param lastName          author's last name
+     *
+     * @return                  exist or not
+     */
+    public boolean ejbHomeIsAuthorExist(String firstName, String lastName) {
+        System.out.println("------[Author] ejbHomeIsAuthorExist");
+        final String sqlQuery = "SELECT authorId FROM authors WHERE firstName=? AND lastName=?";
+        try {
+            Object result = DBUtils.executeSelectSingle(getConnection(), sqlQuery, new Object[] {firstName, lastName});
+            return (result != null);
+        } catch (SQLException e) {
+            throw new EJBException("Author EJB can't be find due to the errors during the work with database", e);
+        } catch (NamingException e) {
+            throw new EJBException("Can't lookup datasource object", e);
+        }
+    }
+
+    public Integer ejbFindByName(String firstName, String lastName) throws FinderException {
+        System.out.println("-----------[Author] ejbFindByName");
+        this.firstName = firstName;
+        this.lastName = lastName;
+
+        final String sqlQuery = "SELECT authorId FROM authors WHERE firstName = ? AND lastName = ?";
+        try {
+            Collection<List> queryRes = DBUtils.executeSelect(getConnection(), sqlQuery, new Object[]{firstName, lastName},
+                    new int[]{}).values();
+            Iterator<List> queryResIter = queryRes.iterator();
+            this.authorId = (Integer)(queryResIter.next().get(0));
+        } catch (SQLException e) {
+            throw new EJBException("Author EJB can't be load due to the errors during the work with database", e);
+        } catch (NamingException e) {
+            throw new EJBException("Can't lookup datasource object", e);
+        }
+        return authorId;
     }
 }
