@@ -14,7 +14,7 @@
 
 <body>
 <div id="header">
-    <h1><a href="bookStore">Books Store WEB site</a></h1>
+    <h1><a href="books">Books Store WEB site</a></h1>
 </div>
 
 <div id="navigation">

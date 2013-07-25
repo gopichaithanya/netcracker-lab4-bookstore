@@ -49,7 +49,11 @@ public class PublisherBean implements EntityBean {
             // Filling the result
             while (idsIter.hasNext() && namesIter.hasNext() && urlIter.hasNext()) {
                 //TODO:!!! error may occur in this place
-                result.add(new ThinEntityWrapper(idsIter.next().toString(), namesIter.next().toString() + urlIter.next().toString()));
+//                ArrayList<String> allPublishersInfo = new ArrayList<String>();
+//                allPublishersInfo.add(namesIter.next().toString());
+//                allPublishersInfo.add(urlIter.next().toString());
+
+                result.add(new ThinEntityWrapper(idsIter.next().toString(), namesIter.next().toString() + urlIter.next().toString() ));
             }
 
             return result;
@@ -117,7 +121,7 @@ public class PublisherBean implements EntityBean {
         this.publisherName = publisherName;
         this.publisherURL = publisherURL;
 
-        final String sqlQuery = "INSERT INTO publishers VALUES (?, ?, ?)";
+        final String sqlQuery = "INSERT INTO publishers (publishName, publishUrl) VALUES (?, ?)";
 
         try {
             int affectedRows = DBUtils.executeUpdate(getConnection(), sqlQuery, new Object[] {publisherId, publisherName, publisherURL});
