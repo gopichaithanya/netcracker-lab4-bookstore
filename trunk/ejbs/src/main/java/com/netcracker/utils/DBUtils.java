@@ -59,11 +59,11 @@ public class DBUtils {
         Map<String, List> result = new TreeMap<String, List>();
         if (retColNums.length != 0) {   // In this case result will contain only those columns (from result set), that specified in array
             for (int colNum : retColNums) {
-                result.put(""+colNum, new LinkedList());
+                result.put(String.valueOf(colNum), new LinkedList());
             }
         } else {    // In this case result will contain all columns from result set
             for (int colNum = 1; colNum <= metaData.getColumnCount(); colNum++) {
-                result.put(""+colNum, new LinkedList());
+                result.put(String.valueOf(colNum), new LinkedList());
             }
         }
 
@@ -72,10 +72,10 @@ public class DBUtils {
             for (int colNum = 1; colNum <= metaData.getColumnCount(); colNum++) {
                 if (retColNums.length != 0) {   // Fill specified columns
                     if (isInArray(colNum, retColNums)) {
-                        result.get(""+colNum).add(rs.getObject(colNum));
+                        result.get(String.valueOf(colNum)).add(rs.getObject(colNum));
                     }
                 } else {    // Fill all impossible columns
-                    result.get(""+colNum).add(rs.getObject(colNum));
+                    result.get(String.valueOf(colNum)).add(rs.getObject(colNum));
                 }
             }
         }
@@ -128,6 +128,27 @@ public class DBUtils {
         } finally {
             cleanup(rs, stm, connection);
         }
+    }
+
+    /**
+     * Execute given query "sqlQuery" and from the result set returns column with "colNum" number.
+     *
+     * @param connection    connection to the database
+     * @param sqlQuery      executed SQL query
+     * @param colNum        returned column from the result set
+     *
+     * @return              returns column from the result set represented as Java collection
+     *
+     * @throws SQLException when any errors during the work with database are occurs
+     * @throws IllegalArgumentException     in case when colNum parameter is negative
+     */
+    public static Collection selectSingleColumn(Connection connection, String sqlQuery, int colNum) throws SQLException {
+        if (colNum < 0) {
+            throw new IllegalArgumentException("colNum parameter must be positive number");
+        }
+
+        return null;
+
     }
 
     /**

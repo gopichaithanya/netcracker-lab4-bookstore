@@ -16,7 +16,7 @@
     </modules>
 
     <properties>
-        <deployment.dir>C:\jboss\standalone\deployments</deployment.dir>
+        <deployment.dir>D:\jboss\standalone\deployments</deployment.dir>
     </properties>
 
     <dependencies>

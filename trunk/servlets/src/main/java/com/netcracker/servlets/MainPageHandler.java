@@ -1,13 +1,14 @@
 package com.netcracker.servlets;
 
-import com.netcracker.ejb.entity.AuthorHome;
-import com.netcracker.ejb.entity.AuthorRemote;
-import com.netcracker.ejb.entity.GenreHome;
-import com.netcracker.ejb.entity.GenreRemote;
+import com.netcracker.ejb.entity.*;
+import com.netcracker.ejb.session.BookSearchService;
+import com.netcracker.ejb.session.BookSearchServiceHome;
 import com.netcracker.exceptions.DataAccessException;
 import com.netcracker.helper.Helper;
+import com.netcracker.helper.ThinEntityWrapper;
 import org.apache.log4j.Logger;
 
+import javax.ejb.CreateException;
 import javax.ejb.FinderException;
 import javax.naming.NamingException;
 import javax.rmi.PortableRemoteObject;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Collection;
 
 public class MainPageHandler extends HttpServlet {
 
@@ -40,10 +42,13 @@ public class MainPageHandler extends HttpServlet {
             Object obj2 = Helper.getInstance().getContext().lookup(authorJNDI);
             AuthorHome authorHome = (AuthorHome) PortableRemoteObject.narrow(obj2, AuthorHome.class);
             //--------------------------------------------------
+            final String bookJNDI = "ear-1.0/ejbPart/BookSearchService!com.netcracker.ejb.session.BookSearchServiceHome";
+            Object obj3 = Helper.getInstance().getContext().lookup(bookJNDI);
+            BookSearchServiceHome booksService = (BookSearchServiceHome) PortableRemoteObject.narrow(obj3, BookSearchServiceHome.class);
+            BookSearchService bookSearchService = booksService.create();
+            //--------------------------------------------------
 
             HttpSession session = req.getSession();
-            //req.setAttribute("authorsList", dao.getAllAuthors());
-            //req.setAttribute("genresList", dao.getAllGenres());
             req.setAttribute("authorsList", authorHome.getAuthorsInfo());
             req.setAttribute("genresList", genreHome.getGenresInfo());
 
@@ -63,9 +68,10 @@ public class MainPageHandler extends HttpServlet {
                 if (authorId >= 0) {
                     selectedAuthor = authorHome.findByPrimaryKey(new Integer(authorId));
                 }
+            } else {
+                selectedAuthorId = String.valueOf(-1);
             }
             session.setAttribute("selAuthor", selectedAuthor);
-
 
             /*
             * A behavior of the session scope variable selectedGenre is similar as a selectedAuthor
@@ -78,19 +84,25 @@ public class MainPageHandler extends HttpServlet {
                 if (genreId >= 0) {
                     selectedGenre = genreHome.findByPrimaryKey(new Integer(genreId));
                 }
+            } else {
+                selectedGenreId = String.valueOf(-1);
             }
             session.setAttribute("selGenre", selectedGenre);
 
-            /*List<ShortBookDescr> books = dao.getBooksShortDescriptions(selectedAuthor, selectedGenre);
-            req.setAttribute("searchResult", books);*/
+            /*
+            * Load general information about available books
+            * */
+            Collection<ThinEntityWrapper> books = bookSearchService.getBooksShortInfo(Integer.valueOf(selectedAuthorId),
+                                                                                      Integer.valueOf(selectedGenreId));
+            req.setAttribute("searchResult", books);
+
 
             /*
              * Facility that allow user to scroll pages.
              * In other word if there are many books per one page this books divided on
              * the several pages and user can navigate through this pages
              * */
-
-            /*String curPage = req.getParameter("page"); //Current (selected by user) page
+            String curPage = req.getParameter("page"); //Current (selected by user) page
             final int booksPerPage = 8; //Maximum number of books placed on one page
             final int pagesAmount;
             if (books.size() % booksPerPage == 0) {
@@ -111,10 +123,10 @@ public class MainPageHandler extends HttpServlet {
                 int topBookIndex = currentPage*booksPerPage - 1;
                 req.setAttribute("lowBookIndex", lowBookIndex);
                 req.setAttribute("topBookIndex", topBookIndex);
-            }*/
+            }
 
             // Pass control to the main page of application
-            req.getServletContext().getRequestDispatcher("/WEB-INF/index.jsp").forward(req, resp);
+            req.getServletContext().getRequestDispatcher("/WEB-INF/jsp/index.jsp").forward(req, resp);
 
         } catch (NamingException e) {
             throw new ServletException("Can't lookup bean", e);
@@ -123,6 +135,8 @@ public class MainPageHandler extends HttpServlet {
             throw new ServletException("Errors occurs during the work with database", e);
         } catch (FinderException e) {
             throw new ServletException("Can't find EJB with specified primary key",e);
+        } catch (CreateException e) {
+            throw new ServletException("Can't retrieve BookSearchService bean", e);
         }
     }
 }
