@@ -6,6 +6,7 @@
          version="3.0">
 
     <enterprise-beans>
+
         <entity>
             <description>Represent Genre entity</description>
             <ejb-name>GenreBean</ejb-name>
@@ -23,6 +24,7 @@
                 <mapped-name>java:jboss/datasources/bookStoreDB</mapped-name>
             </resource-ref>
         </entity>
+
         <entity>
             <description>Represent Author entity</description>
             <ejb-name>AuthorBean</ejb-name>
@@ -40,6 +42,7 @@
                 <mapped-name>java:jboss/datasources/bookStoreDB</mapped-name>
             </resource-ref>
         </entity>
+
         <entity>
             <description>Represent Publisher entity</description>
             <ejb-name>PublisherBean</ejb-name>
@@ -57,24 +60,62 @@
                 <mapped-name>java:jboss/datasources/bookStoreDB</mapped-name>
             </resource-ref>
         </entity>
-        <!--<entity>-->
-            <!--<description>Represent Book entity</description>-->
-            <!--<ejb-name>BookBean</ejb-name>-->
-            <!--<home>com.netcracker.ejb.entity.BookHome</home>-->
-            <!--<remote>com.netcracker.ejb.entity.BookRemote</remote>-->
-            <!--<ejb-class>com.netcracker.ejb.entity.BookBean</ejb-class>-->
-            <!--<persistence-type>Bean</persistence-type>-->
-            <!--<prim-key-class>java.lang.Integer</prim-key-class>-->
-            <!--&lt;!&ndash;com.netcracker.ejb.entity.Author.AuthorPk&ndash;&gt;-->
-            <!--<reentrant>false</reentrant>-->
-            <!--<resource-ref>-->
-                <!--<description>Reference to the bookstore database</description>-->
-                <!--<res-ref-name>datasources/booksStoreDB</res-ref-name>-->
-                <!--<res-auth>Container</res-auth>-->
-                <!--<mapped-name>java:jboss/datasources/bookStoreDB</mapped-name>-->
-            <!--</resource-ref>-->
-        <!--</entity>-->
 
+        <entity>
+            <description>Represent Book entity</description>
+            <ejb-name>BookBean</ejb-name>
+            <home>com.netcracker.ejb.entity.BookHome</home>
+            <remote>com.netcracker.ejb.entity.Book</remote>
+            <ejb-class>com.netcracker.ejb.entity.BookBean</ejb-class>
+            <persistence-type>Bean</persistence-type>
+            <prim-key-class>java.lang.Integer</prim-key-class>
+            <reentrant>false</reentrant>
+                <!--Reference to Author bean-->
+            <ejb-ref>
+                <ejb-ref-name>ejbs/AuthorBean</ejb-ref-name>
+                <ejb-ref-type>Entity</ejb-ref-type>
+                <home>com.netcracker.ejb.entity.AuthorHome</home>
+                <remote>com.netcracker.ejb.entity.AuthorRemote</remote>
+                <ejb-link>AuthorBean</ejb-link>
+            </ejb-ref>
+                <!--Reference to Genre bean-->
+            <ejb-ref>
+                <ejb-ref-name>ejbs/GenreBean</ejb-ref-name>
+                <ejb-ref-type>Entity</ejb-ref-type>
+                <home>com.netcracker.ejb.entity.GenreHome</home>
+                <remote>com.netcracker.ejb.entity.GenreRemote</remote>
+                <ejb-link>GenreBean</ejb-link>
+            </ejb-ref>
+                <!--Reference to Publisher bean-->
+            <ejb-ref>
+                <ejb-ref-name>ejbs/PublisherBean</ejb-ref-name>
+                <ejb-ref-type>Entity</ejb-ref-type>
+                <home>com.netcracker.ejb.entity.PublisherHome</home>
+                <remote>com.netcracker.ejb.entity.PublisherRemote</remote>
+                <ejb-link>PublisherBean</ejb-link>
+            </ejb-ref>
+                <!--Datasource reference-->
+            <resource-ref>
+                <description>Reference to the bookstore database</description>
+                <res-ref-name>datasources/booksStoreDB</res-ref-name>
+                <res-auth>Container</res-auth>
+                <mapped-name>java:jboss/datasources/bookStoreDB</mapped-name>
+            </resource-ref>
+        </entity>
+
+        <session>
+            <ejb-name>BookSearchService</ejb-name>
+            <home>com.netcracker.ejb.session.BookSearchServiceHome</home>
+            <remote>com.netcracker.ejb.session.BookSearchService</remote>
+            <ejb-class>com.netcracker.ejb.session.BookSearchServiceBean</ejb-class>
+            <session-type>Stateless</session-type>
+            <resource-ref>
+                <description>Reference to the bookstore database</description>
+                <res-ref-name>datasources/booksStoreDB</res-ref-name>
+                <res-auth>Container</res-auth>
+                <mapped-name>java:jboss/datasources/bookStoreDB</mapped-name>
+            </resource-ref>
+        </session>
 
     </enterprise-beans>
 </ejb-jar>

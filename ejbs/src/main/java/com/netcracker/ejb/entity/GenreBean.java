@@ -29,7 +29,7 @@ public class GenreBean implements EntityBean {
 
 
     public Collection<ThinEntityWrapper> ejbHomeGetGenresInfo() throws DataAccessException {
-        ArrayList<ThinEntityWrapper> result = new ArrayList<ThinEntityWrapper>();
+        List<ThinEntityWrapper> result = new ArrayList<ThinEntityWrapper>();
         String sql = "SELECT genreId, name from genres";
         try {
             Map <String, List> genresDescription = DBUtils.executeSelect(getConnection(), sql, new Object[]{}, new int[]{});
@@ -44,9 +44,6 @@ public class GenreBean implements EntityBean {
 
             // Filling the result
             while (idsIter.hasNext() && namesIter.hasNext()) {
-//                ArrayList<String> allGenresInfo = new ArrayList<String>();
-//                allGenresInfo.add(namesIter.next().toString());
-
                 result.add(new ThinEntityWrapper(idsIter.next().toString(), namesIter.next().toString()));
             }
 
@@ -56,7 +53,6 @@ public class GenreBean implements EntityBean {
         } catch (NamingException e) {
             throw new DataAccessException("Can't lookup datasource object", e);
         }
-
     }
 
     //--------------------------------------------------------------------------------------------------------------

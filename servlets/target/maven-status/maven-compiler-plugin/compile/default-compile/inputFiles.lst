@@ -1,8 +1,8 @@
-D:\Lab4\lab4\servlets\src\main\java\TestServlet.java
-D:\Lab4\lab4\servlets\src\main\java\com\netcracker\servlets\AddBook.java
-D:\Lab4\lab4\servlets\src\main\java\com\netcracker\servlets\DeleteAuthor.java
-D:\Lab4\lab4\servlets\src\main\java\com\netcracker\servlets\MainPageHandler.java
-D:\Lab4\lab4\servlets\src\main\java\com\netcracker\servlets\FindBook.java
-D:\Lab4\lab4\servlets\src\main\java\com\netcracker\servlets\Authorization.java
-D:\Lab4\lab4\servlets\src\main\java\com\netcracker\helper\Helper.java
-D:\Lab4\lab4\servlets\src\main\java\com\netcracker\servlets\AddAuthor.java
+D:\NetCracker\lab4_SVN\servlets\src\main\java\com\netcracker\servlets\MainPageHandler.java
+D:\NetCracker\lab4_SVN\servlets\src\main\java\com\netcracker\helper\Helper.java
+D:\NetCracker\lab4_SVN\servlets\src\main\java\TestServlet.java
+D:\NetCracker\lab4_SVN\servlets\src\main\java\com\netcracker\servlets\FindBook.java
+D:\NetCracker\lab4_SVN\servlets\src\main\java\com\netcracker\servlets\Authorization.java
+D:\NetCracker\lab4_SVN\servlets\src\main\java\com\netcracker\servlets\DeleteAuthor.java
+D:\NetCracker\lab4_SVN\servlets\src\main\java\com\netcracker\servlets\AddAuthor.java
+D:\NetCracker\lab4_SVN\servlets\src\main\java\com\netcracker\servlets\AddBook.java

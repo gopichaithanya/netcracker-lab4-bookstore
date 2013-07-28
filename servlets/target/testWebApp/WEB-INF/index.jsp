@@ -104,13 +104,13 @@
                 <c:forEach items="${requestScope.searchResult}"
                            var="book" begin="${requestScope.lowBookIndex}" end="${requestScope.topBookIndex}">
                     <tr>
-                        <td class="imgCol"><img src="images/${book.imgRef}"/></td>
+                        <td class="imgCol"><img src="images/${book.addInfo}"/></td>
                         <td class="dataCol">
-                            ${book.title}<br>
-                            <a href="showMore?bookId=${book.bookId}">ShowMore</a><br>
+                            ${book.info}<br>
+                            <a href="showMore?bookId=${book.id}">ShowMore</a><br>
                             <c:if test="${not empty sessionScope.authorize}">
-                                <a href="modifyBook?bookId=${book.bookId}">Modificate</a><br>
-                                <a href="deleteBook?bookId=${book.bookId}">Delete</a>
+                                <a href="modifyBook?bookId=${book.id}">Modificate</a><br>
+                                <a href="deleteBook?bookId=${book.id}">Delete</a>
                             </c:if>
                         </td>
                     </tr>

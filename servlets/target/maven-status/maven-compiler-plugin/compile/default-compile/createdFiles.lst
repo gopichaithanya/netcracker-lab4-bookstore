@@ -1,8 +1,8 @@
+com\netcracker\servlets\AddAuthor.class
+com\netcracker\servlets\DeleteAuthor.class
 com\netcracker\servlets\MainPageHandler.class
 TestServlet.class
-com\netcracker\servlets\AddAuthor.class
 com\netcracker\helper\Helper.class
-com\netcracker\servlets\DeleteAuthor.class
 com\netcracker\servlets\AddBook.class
 com\netcracker\servlets\FindBook.class
 com\netcracker\servlets\Authorization.class
