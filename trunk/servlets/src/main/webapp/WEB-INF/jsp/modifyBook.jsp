@@ -29,7 +29,7 @@
             <h2 style="font-family: cursive; color: red"> Please, check entered data.  </h2>
             </c:if>
             </p>
-            <h2 style="font-family: cursive; color: green">Enter new book parameters:</h2>
+            <h2 style="font-family: cursive; color: green">Modify book parameters:</h2>
             <table>
                 <tr>
                     <td>title:</td>
@@ -79,14 +79,14 @@
                                 </option>
                             </c:forEach>
                         </select>
-                     <a href="/bookStore/addAuthor">  Add new Author </a>
+                        <a href="/bookStore/addAuthor">  Add new Author </a>
                     </td>
 
                 </tr>
 
 
-                    <td>description:</td>
-                    <td><textarea type="text" rows="10" cols="50" name="descript"></textarea></td>
+                <td>description:</td>
+                <td><textarea type="text" rows="10" cols="50" name="descript"></textarea></td>
                 </tr>
                 <tr>
                     <td>image:</td>

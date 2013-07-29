@@ -19,7 +19,7 @@
 
 <div id="navigation">
     <ul>
-        <li><a href="/bookStore/books">Home</a></li>
+        <li><a href="/books">Home</a></li>
     </ul>
 </div>
 

@@ -13,11 +13,13 @@ import java.util.List;
 
 public interface PublisherHome extends EJBHome {
 
-    public PublisherRemote create(int genreId, String genreName, String publisherURL) throws RemoteException, CreateException;
+    public Publisher create(String genreName, String publisherURL) throws RemoteException, CreateException;
 
-    public PublisherRemote findByPrimaryKey(Integer publisherPk) throws RemoteException, FinderException, DataAccessException;
+    public Publisher findByPrimaryKey(Integer publisherPk) throws RemoteException, FinderException, DataAccessException;
 
     public List getPublishersAmount() throws DataAccessException, RemoteException;
 
     public Collection<ThinEntityWrapper> getPublishersInfo() throws DataAccessException, RemoteException;
+
+    public boolean isPublisherExist(String name, String url)throws DataAccessException, RemoteException;
 }

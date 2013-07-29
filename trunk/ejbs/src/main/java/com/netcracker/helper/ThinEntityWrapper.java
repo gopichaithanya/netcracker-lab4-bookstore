@@ -48,3 +48,6 @@ public class ThinEntityWrapper implements Serializable {
         return addInfo;
     }
 }
+
+
+

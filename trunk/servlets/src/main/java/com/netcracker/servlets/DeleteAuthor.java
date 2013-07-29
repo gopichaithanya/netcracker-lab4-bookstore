@@ -1,13 +1,11 @@
 package com.netcracker.servlets;
 
-import com.mysql.jdbc.StringUtils;
 import com.netcracker.ejb.entity.AuthorHome;
-import com.netcracker.ejb.entity.AuthorRemote;
+import com.netcracker.ejb.entity.Author;
 import com.netcracker.exceptions.DataAccessException;
 import com.netcracker.helper.Helper;
 import org.apache.log4j.Logger;
 
-import javax.ejb.CreateException;
 import javax.ejb.FinderException;
 import javax.ejb.RemoveException;
 import javax.naming.Context;
@@ -18,7 +16,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,8 +36,8 @@ public class DeleteAuthor extends HttpServlet {
             Object obj = ctx.lookup("ear-1.0/ejbPart/AuthorBean!com.netcracker.ejb.entity.AuthorHome");
             authorHome = (AuthorHome) PortableRemoteObject.narrow(obj, AuthorHome.class);
 
-                AuthorRemote authorRemote = authorHome.findByPrimaryKey(Integer.parseInt(id));
-                authorRemote.remove();
+                Author author = authorHome.findByPrimaryKey(Integer.parseInt(id));
+                author.remove();
 
                 log.info("Author with id  " + id + " successfully removed.");
                 req.getServletContext().getRequestDispatcher("/books").forward(req, resp);
@@ -64,7 +61,7 @@ public class DeleteAuthor extends HttpServlet {
             Context ctx = Helper.getInstance().getContext();
             Object obj = ctx.lookup("ear-1.0/ejbPart/AuthorBean!com.netcracker.ejb.entity.AuthorHome");
             authorHome = (AuthorHome) PortableRemoteObject.narrow(obj, AuthorHome.class);
-            List<AuthorRemote> allAuthors = new ArrayList<AuthorRemote>();
+            List<Author> allAuthors = new ArrayList<Author>();
 
             req.setAttribute("authorsList", authorHome.getAuthorsInfo());
         } catch (DataAccessException e) {

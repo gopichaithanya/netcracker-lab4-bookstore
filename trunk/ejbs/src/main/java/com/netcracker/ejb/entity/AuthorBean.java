@@ -69,7 +69,7 @@ public class AuthorBean implements EntityBean{
 //                allAuthorInfo.add(lastNamesIter.next().toString());
 
                 //TODO: error may occur in this place
-                result.add(new ThinEntityWrapper(idsIter.next().toString(), firstNamesIter.next().toString() + " " + lastNamesIter.next().toString()));
+                result.add(new ThinEntityWrapper(idsIter.next().toString(), firstNamesIter.next().toString(), lastNamesIter.next().toString()));
             }
 
             return result;

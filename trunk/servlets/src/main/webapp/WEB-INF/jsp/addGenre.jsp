@@ -28,27 +28,24 @@
         <FORM METHOD=POST>
             <p>
                 <c:if test="${requestScope.alreadyExist}">
-            <h2 style="font-family: cursive; color: red"> Author with entered first and last names are already exist in the database!  </h2>
+            <h2 style="font-family: cursive; color: red"> Genre with entered name already exist in the database!  </h2>
             </c:if>
             </p>
             <p>
                 <c:if test="${requestScope.error}">
-            <h2 style="font-family: cursive; color: red"> Please, enter authors the first and the last names.  </h2>
+            <h2 style="font-family: cursive; color: red"> Please, enter genre name.  </h2>
             </c:if>
             </p>
-            <h2 style="font-family: cursive; color: green">Create new author:</h2>
+            <h2 style="font-family: cursive; color: green">Create new genre:</h2>
             <table>
                 <tr>
-                    <td>author's first name:</td>
-                    <td><input type="text" name="firstName" value="${requestScope.author.firstName}"></td>
+                    <td>Genre of book:</td>
+                    <td><input type="text" name="name" value="${requestScope.genre.genreName}"></td>
                 </tr>
-                <tr>
-                    <td>author's last name:</td>
-                    <td><input type="text" name="lastName" value="${requestScope.author.lastName}"></td>
-                </tr>
+
             </table>
             <br>
-            <input type="submit" value="Add Author">
+            <input type="submit" value="Add Genre">
             <input type="reset" value="Reset" style="margin-left: 10px">
         </FORM>
     </div>

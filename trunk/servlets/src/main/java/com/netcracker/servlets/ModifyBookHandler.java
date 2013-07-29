@@ -27,9 +27,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AddBook extends HttpServlet {
+public class ModifyBookHandler extends HttpServlet {
 
-    private static final Logger log = Logger.getLogger(AddBook.class);
+    private static final Logger log = Logger.getLogger(ModifyBookHandler.class);
 
     private String title;
     private String description;

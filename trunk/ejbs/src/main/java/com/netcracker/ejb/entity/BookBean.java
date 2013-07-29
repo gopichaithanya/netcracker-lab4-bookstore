@@ -1,3 +1,5 @@
+
+
 package com.netcracker.ejb.entity;
 
 
@@ -101,10 +103,10 @@ public class BookBean implements EntityBean {
         return authorIds;
     }
 
-    public Collection<AuthorRemote> getAuthors() throws DataAccessException, RemoteException {
+    public Collection<Author> getAuthors() throws DataAccessException, RemoteException {
         final String authorRef = "java:comp/env/ejbs/AuthorBean";
         Integer authorId = -1;
-        List<AuthorRemote> authors = new ArrayList<AuthorRemote>();
+        List<Author> authors = new ArrayList<Author>();
         try {
             for (Iterator<Integer> authorsIter = authorIds.iterator(); authorsIter.hasNext();) {
                 authorId = authorsIter.next();
@@ -121,7 +123,7 @@ public class BookBean implements EntityBean {
         return genreId;
     }
 
-    public GenreRemote getGenre() throws DataAccessException, RemoteException {
+    public Genre getGenre() throws DataAccessException, RemoteException {
         final String genreRef = "java:comp/env/ejbs/GenreBean";
         try {
             return lookupBeanHomeObject(genreRef, GenreHome.class).findByPrimaryKey(genreId);
@@ -135,7 +137,7 @@ public class BookBean implements EntityBean {
         return publishId;
     }
 
-    public PublisherRemote getPublisher() throws DataAccessException, RemoteException {
+    public Publisher getPublisher() throws DataAccessException, RemoteException {
         final String publishRef = "java:comp/env/ejbs/PublisherBean";
         try {
             return lookupBeanHomeObject(publishRef, PublisherHome.class).findByPrimaryKey(publishId);
@@ -166,7 +168,7 @@ public class BookBean implements EntityBean {
         this.publishId = publishId;
     }
 
-    public void setPublisher(PublisherRemote publisher) throws RemoteException {
+    public void setPublisher(Publisher publisher) throws RemoteException {
         this.publishId = publisher.getPublisherId();
     }
 
@@ -175,7 +177,7 @@ public class BookBean implements EntityBean {
         this.genreId = genreId;
     }
 
-    public void setGenre(GenreRemote genre) throws RemoteException {
+    public void setGenre(Genre genre) throws RemoteException {
         this.genreId = genre.getGenreId();
     }
 
@@ -185,9 +187,9 @@ public class BookBean implements EntityBean {
         this.authorIds.addAll(authorIds);
     }
 
-    public void setAuthors(Collection<AuthorRemote> authors) throws RemoteException {
+    public void setAuthors(Collection<Author> authors) throws RemoteException {
         authorIds.clear();
-        for (AuthorRemote author : authors) {
+        for (Author author : authors) {
             authorIds.add(author.getAuthorId());
         }
     }
@@ -266,7 +268,7 @@ public class BookBean implements EntityBean {
                 .append("       ON (bl.authorId = ath.authorId and ath.authorId = ?)");
         try {
                Map<String, List> columns = DBUtils.executeSelect(getConnection(), sqlQuery.toString(),
-                                                               new Object[]{authorId}, new int[]{1});
+                       new Object[]{authorId}, new int[]{1});
 
             return columns.get("1");
 
@@ -315,17 +317,17 @@ public class BookBean implements EntityBean {
         context = null;
     }
 
-    public void ejbActivate() throws EJBException{
+    public void ejbActivate() throws EJBException {
         System.out.println("---------[Book] ejbActivate()");
 
     }
 
-    public void ejbPassivate() throws EJBException{
+    public void ejbPassivate() throws EJBException {
         System.out.println("---------[Book] ejbPassivate()");
 
     }
 
-    public void ejbLoad() throws EJBException{
+    public void ejbLoad() throws EJBException {
         System.out.println("---------[Book] ejbLoad()");
         Integer bookPk = (Integer)context.getPrimaryKey();
         final String sqlQuery = "SELECT * FROM books WHERE booksId = ?";
@@ -355,8 +357,8 @@ public class BookBean implements EntityBean {
      * @param bookId    analyzed book
      * @return          list of authors IDs that wrote given book
      *
-     * @throws SQLException     if any errors during the work with database occurs.
-     * @throws NamingException  when can't lookup datasource object
+     * @throws java.sql.SQLException     if any errors during the work with database occurs.
+     * @throws javax.naming.NamingException  when can't lookup datasource object
      */
     private Collection<Integer> getBookAuthorsIds(Integer bookId) throws SQLException, NamingException {
         final String sqlQuery = "SELECT authorId FROM balink WHERE bookId = ?";
@@ -394,8 +396,8 @@ public class BookBean implements EntityBean {
     /**
      * Returns connection to the database.
      *
-     * @throws NamingException  in case when can't lookup datasource object
-     * @throws SQLException     when any errors occurs during the work with database
+     * @throws javax.naming.NamingException  in case when can't lookup datasource object
+     * @throws java.sql.SQLException     when any errors occurs during the work with database
      */
     private Connection getConnection() throws NamingException, SQLException {
         Context ctx = new InitialContext();
