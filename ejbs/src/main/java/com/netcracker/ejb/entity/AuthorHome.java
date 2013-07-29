@@ -18,13 +18,13 @@ import java.util.List;
  */
 public interface AuthorHome extends EJBHome {
 
-    public AuthorRemote create(String firstName, String lastName)
+    public Author create(String firstName, String lastName)
             throws CreateException, RemoteException;
 
-    public AuthorRemote findByName(String firstName, String lastName)
+    public Author findByName(String firstName, String lastName)
             throws RemoteException, FinderException;
 
-    public AuthorRemote findByPrimaryKey(Integer authorPk)
+    public Author findByPrimaryKey(Integer authorPk)
             throws FinderException, RemoteException, DataAccessException;
 
 // Home business methods

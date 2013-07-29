@@ -44,7 +44,13 @@ public class AddAuthor extends HttpServlet {
             } else {
                 authorHome.create(firstName, lastName);
                 log.info("Author  " + firstName + " " + lastName+ " successfully added.");
-                req.getServletContext().getRequestDispatcher("/books").forward(req, resp);
+
+                if ((Boolean)req.getSession().getAttribute("fromAddBookPage")) {
+                     resp.sendRedirect("http://localhost:8080/bookStore/addBook");
+                } else {
+                    req.getServletContext().getRequestDispatcher("/books").forward(req, resp);
+                }
+
             }
         } catch (CreateException e) {
             log.error("Error occurs during adding author to the database", e);

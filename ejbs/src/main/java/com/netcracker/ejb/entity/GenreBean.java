@@ -63,12 +63,12 @@ public class GenreBean implements EntityBean {
     //------------------------------------------ Remote Business methods -------------------------------------------
 
     public int getGenreId() {
-        System.out.println("------- [Genre] getGenreId");
+        System.out.println("------- [GenreBean] getGenreId");
         return genreId;
     }
 
     public String getGenreName() {
-        System.out.println("-------[Genre] getGenreName");
+        System.out.println("-------[GenreBean] getGenreName");
         return genreName;
     }
 
@@ -80,7 +80,7 @@ public class GenreBean implements EntityBean {
     //------------------------------------------ Finder methods ----------------------------------------------------
 
     public Integer ejbFindByPrimaryKey(Integer genrePk) throws DataAccessException, FinderException {
-        System.out.println("------[Genre] ejbFindByPrimaryKey");
+        System.out.println("------[GenreBean] ejbFindByPrimaryKey");
         final String sqlQuery = "SELECT genreId FROM genres WHERE genreId = ?";
         try {
             Object result = DBUtils.executeSelectSingle(getConnection(), sqlQuery, new Object[] {genrePk.intValue()});
@@ -89,7 +89,7 @@ public class GenreBean implements EntityBean {
             }
             return new Integer(Integer.parseInt(result.toString()));
         } catch (SQLException e) {
-            throw new DataAccessException("Genre EJB can't be find due to the errors during the work with database", e);
+            throw new DataAccessException("GenreBean EJB can't be find due to the errors during the work with database", e);
         } catch (NamingException e) {
             throw new DataAccessException("Can't lookup datasource object", e);
         }
@@ -100,45 +100,45 @@ public class GenreBean implements EntityBean {
 
     //----------------------------------------- Create and Remove methods ------------------------------------------
 
-    public Integer ejbCreate(int genreId, String genreName) throws CreateException {
-        System.out.println("-------[Genre] ejbCreate");
-        this.genreId = genreId;
+    public Integer ejbCreate(String genreName) throws CreateException {
+        System.out.println("-------[GenreBean] ejbCreate");
         this.genreName = genreName;
 
         final String sqlQuery = "INSERT INTO genres (name) VALUES (?)";
 
         try {
-            int affectedRows = DBUtils.executeInsert(getConnection(), sqlQuery, new Object[] {genreId, genreName});
+            int newGenreId = DBUtils.executeInsert(getConnection(), sqlQuery, new Object[] {genreName});
+            this.genreId = newGenreId;
 
             // If creation procedure has been performed successfully
-            if (affectedRows != 0) {
+            if (newGenreId != 0) {
                 return new Integer(genreId);
             } else {
-                throw new CreateException("Unsuccessful Genre bean creation");
+                throw new CreateException("Unsuccessful GenreBean bean creation");
             }
         } catch (SQLException e) {
-            throw new EJBException("Can't create Genre bean due to the errors during the work with database", e);
+            throw new EJBException("Can't create GenreBean bean due to the errors during the work with database", e);
         } catch (NamingException e) {
             throw new EJBException("Can't lookup datasource object", e);
         }
     }
 
-    public void ejbPostCreate(int genreId, String genreName) throws CreateException {
-        System.out.println("--------[Genre] ejbPostCreate");
+    public void ejbPostCreate(String genreName) throws CreateException {
+        System.out.println("--------[GenreBean] ejbPostCreate");
     }
 
     @Override
     public void ejbRemove() throws RemoveException, EJBException {
-        System.out.println("-------[Genre] ejbRemove");
+        System.out.println("-------[GenreBean] ejbRemove");
         Integer genrePk = (Integer) context.getPrimaryKey();
         final String sqlQuery = "DELETE FROM genres WHERE genreId = ?";
         try {
             int affectedRows = DBUtils.executeUpdate(getConnection(), sqlQuery, new Object[]{genrePk.intValue()});
             if (affectedRows == 0) {
-                throw new RemoveException("Genre bean hasn't been removed");
+                throw new RemoveException("GenreBean bean hasn't been removed");
             }
         } catch (SQLException e) {
-            throw new EJBException("Can't remove Genre bean due to the errors during the work with database", e);
+            throw new EJBException("Can't remove GenreBean bean due to the errors during the work with database", e);
         } catch (NamingException e) {
             throw new EJBException("Can't lookup datasource object", e);
         }
@@ -154,30 +154,30 @@ public class GenreBean implements EntityBean {
     @Override
     public void setEntityContext(EntityContext entityContext) throws EJBException {
         System.out.println("**************");
-        System.out.println("--------[Genre] setEntityContext");
+        System.out.println("--------[GenreBean] setEntityContext");
         this.context = entityContext;
     }
 
     @Override
     public void unsetEntityContext() throws EJBException {
-        System.out.println("---------[Genre] unsetEntityContext");
+        System.out.println("---------[GenreBean] unsetEntityContext");
         System.out.println("**************");
         context = null;
     }
 
     @Override
     public void ejbActivate() throws EJBException {
-        System.out.println("-------- [Genre] ejbActivate");
+        System.out.println("-------- [GenreBean] ejbActivate");
     }
 
     @Override
     public void ejbPassivate() throws EJBException {
-        System.out.println("--------[Genre] ejbPassivate");
+        System.out.println("--------[GenreBean] ejbPassivate");
     }
 
     @Override
     public void ejbLoad() throws EJBException {
-        System.out.println("-----------[Genre] ejbLoad");
+        System.out.println("-----------[GenreBean] ejbLoad");
         Integer genrePk = (Integer)context.getPrimaryKey();
         final String sqlQuery = "SELECT * FROM genres WHERE genreId = ?";
         try {
@@ -187,23 +187,22 @@ public class GenreBean implements EntityBean {
             this.genreId = (Integer)(queryResIter.next().get(0));
             this.genreName = (String)(queryResIter.next().iterator().next());
         } catch (SQLException e) {
-            throw new EJBException("Genre EJB can't be load due to the errors during the work with database", e);
+            throw new EJBException("GenreBean EJB can't be load due to the errors during the work with database", e);
         } catch (NamingException e) {
             throw new EJBException("Can't lookup datasource object", e);
         }
     }
 
-    @Override
     public void ejbStore() throws EJBException {
-        System.out.println("------[Genre] ejbStore");
+        System.out.println("------[GenreBean] ejbStore");
         final String sqlQuery = "UPDATE genres SET genres.name = ? WHERE genreId = ?";
         try {
             int affectedRows = DBUtils.executeUpdate(getConnection(), sqlQuery, new Object[]{this.genreName, this.genreId});
             if (affectedRows == 0) {
-                throw new EJBException("Genre bean hasn't been properly stored into database");
+                throw new EJBException("GenreBean bean hasn't been properly stored into database");
             }
         } catch (SQLException e) {
-            throw new EJBException("Can't store Genre bean due to the errors during the work with database", e);
+            throw new EJBException("Can't store GenreBean bean due to the errors during the work with database", e);
         } catch (NamingException e) {
             throw new EJBException("Can't lookup datasource object", e);
         }
@@ -221,6 +220,20 @@ public class GenreBean implements EntityBean {
         Context ctx = new InitialContext();
         DataSource ds = (DataSource) ctx.lookup("java:comp/env/datasources/booksStoreDB");
         return ds.getConnection();
+    }
+
+    public boolean ejbHomeIsGenreExist(String name) throws DataAccessException {
+        System.out.println("------[GenreBean] ejbHomeIsGenreExist");
+        final String sqlQuery = "SELECT genreId FROM genres WHERE name=?";
+        try {
+            Object result = DBUtils.executeSelectSingle(getConnection(), sqlQuery, new Object[] {name});
+            return (result != null);
+        } catch (SQLException e) {
+            throw new EJBException("GenreBean EJB can't be find due to the errors during the work with database", e);
+        } catch (NamingException e) {
+            throw new EJBException("Can't lookup datasource object", e);
+        }
+
     }
 
     //--------------------------------------------------------------------------------------------------------------

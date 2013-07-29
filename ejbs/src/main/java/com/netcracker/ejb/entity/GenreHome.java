@@ -11,8 +11,8 @@ import java.util.Collection;
 import java.util.List;
 
 public interface GenreHome extends EJBHome {
-    public GenreRemote create(int genreId, String genreName) throws RemoteException, CreateException;
-    public GenreRemote findByPrimaryKey(Integer genrePk) throws DataAccessException, RemoteException, FinderException;
+    public Genre create(String genreName) throws RemoteException, CreateException;
+    public Genre findByPrimaryKey(Integer genrePk) throws DataAccessException, RemoteException, FinderException;
     public List getGenresAmount() throws DataAccessException, RemoteException;
 
     /**
@@ -24,4 +24,6 @@ public interface GenreHome extends EJBHome {
      * @throws RemoteException if any connection problems occurs
      */
     public Collection<ThinEntityWrapper> getGenresInfo() throws DataAccessException, RemoteException;
+
+    public boolean isGenreExist(String name) throws DataAccessException, RemoteException;
 }

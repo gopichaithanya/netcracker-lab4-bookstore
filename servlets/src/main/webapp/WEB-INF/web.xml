@@ -11,7 +11,7 @@
         <ejb-ref-name>genre</ejb-ref-name>
         <ejb-ref-type>Entity</ejb-ref-type>
         <home>com.netcracker.ejb.entity.GenreHome</home>
-        <remote>com.netcracker.ejb.entity.GenreRemote</remote>
+        <remote>com.netcracker.ejb.entity.Genre</remote>
         <mapped-name>java:jboss/exported/ear-1.0/ejbPart/GenreBean!com.netcracker.ejb.entity.GenreHome</mapped-name>
     </ejb-ref>
 
@@ -19,7 +19,7 @@
         <ejb-ref-name>author</ejb-ref-name>
         <ejb-ref-type>Entity</ejb-ref-type>
         <home>com.netcracker.ejb.entity.AuthorHome</home>
-        <remote>com.netcracker.ejb.entity.AuthorRemote</remote>
+        <remote>com.netcracker.ejb.entity.Author</remote>
         <mapped-name>java:jboss/exported/ear-1.0/ejbPart/AuthorBean!com.netcracker.ejb.entity.AuthorHome</mapped-name>
     </ejb-ref>
 
@@ -39,6 +39,33 @@
     <servlet-mapping>
         <servlet-name>addAuthor</servlet-name>
         <url-pattern>/addAuthor</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>addGenre</servlet-name>
+        <servlet-class>com.netcracker.servlets.AddGenre</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>addGenre</servlet-name>
+        <url-pattern>/addGenre</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>addPublisher</servlet-name>
+        <servlet-class>com.netcracker.servlets.AddPublisher</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>addPublisher</servlet-name>
+        <url-pattern>/addPublisher</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>modifyBook</servlet-name>
+        <servlet-class>com.netcracker.servlets.ModifyBookHandler</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>modifyBook</servlet-name>
+        <url-pattern>/modify</url-pattern>
     </servlet-mapping>
 
     <servlet>
