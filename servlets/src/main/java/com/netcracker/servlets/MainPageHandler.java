@@ -61,7 +61,7 @@ public class MainPageHandler extends HttpServlet {
              * */
 
             String selectedAuthorId = req.getParameter("author");
-            AuthorRemote selectedAuthor  = null;
+            Author selectedAuthor  = null;
             if (selectedAuthorId != null) {
                 int authorId = Integer.parseInt(selectedAuthorId);
                 // Negative value of the authorId variable shows that the user has chosen "any" selector
@@ -78,7 +78,7 @@ public class MainPageHandler extends HttpServlet {
             * variable
             * */
             String selectedGenreId = req.getParameter("genre");
-            GenreRemote selectedGenre = null;
+            Genre selectedGenre = null;
             if (selectedGenreId != null) {
                 int genreId = Integer.parseInt(selectedGenreId);
                 if (genreId >= 0) {

@@ -42,34 +42,25 @@ public class AuthorBean implements EntityBean{
         return lastName;
     }
 
-                                         // Home business method
+     // Home business method
 
     public Collection<ThinEntityWrapper> ejbHomeGetAuthorsInfo() throws DataAccessException{
         ArrayList<ThinEntityWrapper> result = new ArrayList<ThinEntityWrapper>();
         String sql = "SELECT authorId, firstName, lastName from authors";
         try {
             Map<String, List> authorsDescriptions = DBUtils.executeSelect(getConnection(), sql, new Object[]{}, new int[]{});
-            // Retrieve columns values
-            Iterator<List> mapValuesIter = authorsDescriptions.values().iterator();
-            // First column
-            List ids = mapValuesIter.next();
-            Iterator idsIter = ids.iterator();
-            // Second column
-            List firstNames = mapValuesIter.next();
-            Iterator firstNamesIter = firstNames.iterator();
-            //Third column
-            List lastNames = mapValuesIter.next();
-            Iterator lastNamesIter = lastNames.iterator();
+
+            // First column iterator
+            Iterator idsIter = authorsDescriptions.get("1").iterator();
+            // Second column iterator
+            Iterator firstNamesIter = authorsDescriptions.get("2").iterator();
+            // Third column iterator
+            Iterator lastNamesIter = authorsDescriptions.get("3").iterator();
 
             // Filling the result
-
             while (idsIter.hasNext() && firstNamesIter.hasNext() && lastNamesIter.hasNext()) {
-//                ArrayList<String> allAuthorInfo = new ArrayList<String>();
-//                allAuthorInfo.add(firstNamesIter.next().toString());
-//                allAuthorInfo.add(lastNamesIter.next().toString());
-
-                //TODO: error may occur in this place
-                result.add(new ThinEntityWrapper(idsIter.next().toString(), firstNamesIter.next().toString(), lastNamesIter.next().toString()));
+                final String authorInfo = firstNamesIter.next().toString() + " " + lastNamesIter.next().toString();
+                result.add(new ThinEntityWrapper(idsIter.next().toString(), authorInfo));
             }
 
             return result;

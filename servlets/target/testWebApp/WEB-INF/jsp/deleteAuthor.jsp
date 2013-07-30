@@ -31,7 +31,7 @@
                         <select name="Id">
                             <c:forEach items="${requestScope.authorsList}" var="author">
                                 <option value="${author.id}">
-                                        ${author.info}
+                                        ${author.info} ${author.addInfo}
                                 </option>
                             </c:forEach>
                         </select>

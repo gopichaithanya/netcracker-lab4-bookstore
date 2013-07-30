@@ -7,11 +7,12 @@
 <head>
     <title>BookStore</title>
     <link rel="stylesheet" type="text/css" media="screen,projection" href="css/mainPage.css"/>
+
 </head>
 
 <body>
 <div id="header">
-    <h1><a href="bookStore">Books Store WEB site</a></h1>
+    <h1><a href="books">Books Store WEB site</a></h1>
 </div>
 
 <div id="navigation">
@@ -32,58 +33,68 @@
             <table>
                 <tr>
                     <td>title:</td>
-                    <td><input type="text" name="title" value = "${requestScope.book.title}"></td>
+                    <td><input type="text" name="title" ></td>
                 </tr>
+
+                <%--List of all Publishers--%>
                 <tr>
-                    <td>author's name:</td>
+                    <td> Publisher: </td>
                     <td>
-                        <select name="authors" multiple="multiple">
-                            <c:forEach items="${requestScope.authorsList}" var="author">
-                                <option value="${author.authorId}">
-                                        ${author.firstName} ${author.lastName}
+                        <select name="publisherId">
+                            <c:forEach items="${requestScope.publishersList}" var="publisher">
+                                <option value="${publisher.id}">
+                                        ${publisher.info} ${publisher.addInfo}
                                 </option>
                             </c:forEach>
                         </select>
+                        <a href="/bookStore/addPublisher"> Add new Publisher </a>
                     <td>
                 </tr>
 
+
+
+                <%--List of all Genres--%>
                 <tr>
-                    <td>publish name:</td>
-                    <select name="publishName" size = "1">
-                        <c:forEach items="${requestScope.publishers}" var="publisher">
-                            <option value="${publisher.publisherId}">
-                                    ${publisher.publisherName}
-                            </option>
-                        </c:forEach>
-                    </select>
-                </tr>
-                <tr>
-                    <td>publish URL:</td>
-                    <td><input type="text" name="publishUrl"  value = "${requestScope.book.publisher.publUrl}"></td>
-                </tr>
-                <tr>
-                    <td>genre:</td>
+                    <td>Genre: </td>
                     <td>
-                        <select name="genres" size = "1">
+                        <select name="genreId">
                             <c:forEach items="${requestScope.genresList}" var="genre">
-                                <option value="${genre.genreId}">
-                                        ${genre.genreName}
+                                <option value="${genre.id}">
+                                        ${genre.info}
                                 </option>
                             </c:forEach>
                         </select>
+                        <a href="/bookStore/addGenre"> Add new Genre </a>
                     <td>
                 </tr>
+
+                <%--List of all authors--%>
                 <tr>
+                    <td>author's  name:</td>
+                    <td>
+                        <select name="authorId">
+                            <c:forEach items="${requestScope.authorsList}" var="author">
+                                <option value="${author.id}">
+                                        ${author.info} ${author.addInfo}
+                                </option>
+                            </c:forEach>
+                        </select>
+                     <a href="/bookStore/addAuthor">  Add new Author </a>
+                    </td>
+
+                </tr>
+
+
                     <td>description:</td>
-                    <td><textarea type="text" rows="10" cols="50" name="descript" >${requestScope.book.description}</textarea></td>
+                    <td><textarea type="text" rows="10" cols="50" name="descript"></textarea></td>
                 </tr>
                 <tr>
                     <td>image:</td>
-                    <td><input type="text" name="imgRef" value = "${requestScope.book.imgRef}"></td>
+                    <td><input type="text" name="imgRef"></td>
                 </tr>
                 <tr>
                     <td>year:</td>
-                    <td><input type="number" name="year" value = "${requestScope.book.year}"></td>
+                    <td><input type="number" name="year" ></td>
                 </tr>
             </table>
             <br>

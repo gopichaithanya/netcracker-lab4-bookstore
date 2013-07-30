@@ -5,10 +5,14 @@ package com.netcracker.ejb.entity;
 import com.netcracker.exceptions.DataAccessException;
 
 import javax.ejb.EJBObject;
+import javax.ejb.RemoveException;
 import java.rmi.RemoteException;
 import java.util.Collection;
 
 public interface Book extends EJBObject {
+
+    public void remove() throws RemoteException, RemoveException;
+
 
     public int getBookId() throws RemoteException;
 
