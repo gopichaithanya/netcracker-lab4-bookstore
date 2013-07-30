@@ -6,6 +6,7 @@ import com.netcracker.helper.ThinEntityWrapper;
 
 import javax.ejb.CreateException;
 import javax.ejb.FinderException;
+import javax.ejb.RemoveException;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -43,18 +44,19 @@ public class TestServlet extends HttpServlet {
             // lookup book
             Object obj = ctx.lookup("ear-1.0/ejbPart/BookBean!com.netcracker.ejb.entity.BookHome");
             BookHome bookHome = (BookHome) PortableRemoteObject.narrow(obj, BookHome.class);
-            Book book = bookHome.findByPrimaryKey(new Integer(107));
+            Book book = bookHome.findByPrimaryKey(new Integer(111));
+            book.remove();
 
             // lookup genre
-            Object obj1 = ctx.lookup("ear-1.0/ejbPart/GenreBean!com.netcracker.ejb.entity.GenreHome");
+            /*Object obj1 = ctx.lookup("ear-1.0/ejbPart/GenreBean!com.netcracker.ejb.entity.GenreHome");
             GenreHome genreHome = (GenreHome) PortableRemoteObject.narrow(obj1, GenreHome.class);
-            GenreRemote genre = genreHome.findByPrimaryKey(new Integer(2355));
+            Genre genre = genreHome.findByPrimaryKey(new Integer(2355));
 
             book.setGenre(genre);
 
 
-            String res = book.getGenre().getGenreName();
-            out.println("<strong>"+ res + "</strong>");
+            String res = book.getGenre().getGenreName();*/
+            out.println("<strong>Deleted</strong>");
 
 
             /*Collection<ThinEntityWrapper> books = service.getBooksShortInfo(-1, -1);
@@ -69,10 +71,10 @@ public class TestServlet extends HttpServlet {
             throw new ServletException(e);
         } catch (FinderException e) {
             throw new ServletException(e);
-        } /*catch (CreateException e) {
+        }/* catch (CreateException e) {
             throw new ServletException(e);
-        } catch (CreateException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }*/
+        }*/ catch (RemoveException e) {
+            throw new ServletException(e);
+        }
     }
 }

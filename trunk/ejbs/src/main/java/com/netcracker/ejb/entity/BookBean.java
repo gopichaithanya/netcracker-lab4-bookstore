@@ -91,6 +91,8 @@ public class BookBean implements EntityBean {
 
     //------------------------------------------ Remote Business methods -------------------------------------------
 
+
+
     public int getBookId() {
         return bookId;
     }
@@ -290,15 +292,57 @@ public class BookBean implements EntityBean {
 
     //----------------------------------------- Create and Remove methods ------------------------------------------
 
-    public Integer ejbCreate(Integer bookId, String title, String lastName) throws CreateException {
-        return new Integer(0);
+    public Integer ejbCreate(String title, int publishId, int genreId, String description, String imgRef, int year)
+            throws CreateException {
+
+        this.title = title;
+        this.publishId = publishId;
+        this.genreId = genreId;
+        this.description = description;
+        this.imgRef = imgRef;
+        this.year = year;
+
+        final String sqlQuery = "INSERT INTO books (title, publishId, genreId, descript, imgRef, year) VALUES (?,?,?,?,?,?)";
+
+        try {
+            int newBookId = DBUtils.executeInsert(getConnection(), sqlQuery,
+                                                  new Object[] {title, publishId, genreId, description, imgRef, year});
+            this.bookId = newBookId;
+
+            // If creation procedure has been performed successfully
+            if (newBookId != 0) {
+                return new Integer(newBookId);
+            } else {
+                throw new CreateException("Unsuccessful book creation");
+            }
+        } catch (SQLException e) {
+            throw new EJBException("Can't create BookBean bean due to the errors during the work with database", e);
+        } catch (NamingException e) {
+            throw new EJBException("Can't lookup datasource object", e);
+        }
     }
 
-    public void ejbPostCreate(Integer bookId, String title, String lastName) throws CreateException { }
+    public void ejbPostCreate(String title, int publishId, int genreId, String description, String imgRef, int year)
+            throws CreateException {}
 
 
-    public void ejbRemove() throws RemoveException, EJBException {
-
+    public void ejbRemove() throws RemoveException {
+        Integer bookId = (Integer) context.getPrimaryKey();
+        final String deleteFromBalink = "DELETE FROM balink WHERE bookId = ?";
+        final String deleteFromBooks = "DELETE FROM books WHERE booksId = ?";
+        try {
+            // This section must be applied in one transaction
+            int affectedRows1 = DBUtils.executeUpdate(getConnection(), deleteFromBalink, new Object[]{bookId});
+            int affectedRows2 = DBUtils.executeUpdate(getConnection(), deleteFromBooks, new Object[]{bookId});
+            if (affectedRows2 == 0) {
+                throw new RemoveException("[Error] book with bookId = " + bookId + " hasn't been removed");
+            }
+        } catch (SQLException e) {
+            throw new EJBException("Book with bookId = " + bookId + " can't be removed due to the errors " +
+                    " during the work with a database", e);
+        } catch (NamingException e) {
+            throw new EJBException("Can't lookup datasource object", e);
+        }
     }
 
     //--------------------------------------------------------------------------------------------------------------

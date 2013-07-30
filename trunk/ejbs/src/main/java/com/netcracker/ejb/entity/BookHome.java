@@ -12,9 +12,8 @@ import java.rmi.RemoteException;
 
 public interface BookHome extends EJBHome {
 
-    public Book create(Integer bookId, String title, String lastName)
+    public Book create(String title, int publishId, int genreId, String description, String imgRef, int year)
             throws CreateException, RemoteException;
-
 
 
     public Book findByPrimaryKey(Integer authorPk)

@@ -36,7 +36,7 @@
             <h2 style="font-family: cursive; color: red"> Please, enter authors the first and the last names.  </h2>
             </c:if>
             </p>
-            <h2 style="font-family: cursive; color: green">Enter new author parameters:</h2>
+            <h2 style="font-family: cursive; color: green">Create new author:</h2>
             <table>
                 <tr>
                     <td>author's first name:</td>
