@@ -190,7 +190,8 @@ public class DBUtils {
      *
      * @throws SQLException
      */
-    public static int executeInsert(Connection connection, String sqlQuery, Object[] params) throws SQLException {
+    public static int executeInsert(Connection connection, String sqlQuery, Object[] params, boolean genKey)
+            throws SQLException {
         if (connection == null || sqlQuery == null || params == null || params.length == 0) {
             throw new IllegalArgumentException("All parameters must be not empty.");
         }
@@ -198,21 +199,20 @@ public class DBUtils {
         PreparedStatement prStm = null;
         ResultSet rs = null;
         try {
-
-            prStm = substituteParams(connection.prepareStatement(sqlQuery, Statement.RETURN_GENERATED_KEYS), params);
-            prStm.executeUpdate();
-            rs = prStm.getGeneratedKeys();
-            rs.next();
-            return rs.getInt(1);
-
+            if (genKey) {
+                prStm = substituteParams(connection.prepareStatement(sqlQuery, Statement.RETURN_GENERATED_KEYS), params);
+                prStm.executeUpdate();
+                rs = prStm.getGeneratedKeys();
+                rs.next();
+                return rs.getInt(1);
+            } else {
+                prStm = substituteParams(connection.prepareStatement(sqlQuery), params);
+                return prStm.executeUpdate();
+            }
         } finally {
             cleanup(rs, prStm, connection);
         }
     }
-
-
-
-
 
 
     // ------------------------------------- Helper methods -----------------------------------------------------
@@ -233,7 +233,11 @@ public class DBUtils {
         int i = 1;
         // Set parameters for SQL query
         for (Object param : params) {
-            prStm.setObject(i, param);
+            if (param instanceof Integer) {     // fake applied for balink table
+                prStm.setInt(i, (Integer)param);
+            } else {
+                prStm.setObject(i, param);
+            }
             i++;
         }
         return prStm;

@@ -86,7 +86,7 @@ public class AuthorBean implements EntityBean{
         final String sqlQuery = "INSERT INTO authors (firstName, lastName) VALUES (?, ?)";
 
         try {
-            int authorId = DBUtils.executeInsert(getConnection(), sqlQuery, new Object[] {firstName, lastName});
+            int authorId = DBUtils.executeInsert(getConnection(), sqlQuery, new Object[] {firstName, lastName}, true);
             this.authorId = authorId;
 
             // If creation procedure has been performed successfully

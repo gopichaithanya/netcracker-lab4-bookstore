@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Properties;
 
@@ -44,8 +45,9 @@ public class TestServlet extends HttpServlet {
             // lookup book
             Object obj = ctx.lookup("ear-1.0/ejbPart/BookBean!com.netcracker.ejb.entity.BookHome");
             BookHome bookHome = (BookHome) PortableRemoteObject.narrow(obj, BookHome.class);
-            Book book = bookHome.findByPrimaryKey(new Integer(111));
-            book.remove();
+            ArrayList<Integer> authors = new ArrayList<Integer>();
+            authors.add(new Integer(1307));
+            Book book = bookHome.create("NewBook", 129, 2345, "Newly Created Book", "999.jpg", 1999, authors);
 
             // lookup genre
             /*Object obj1 = ctx.lookup("ear-1.0/ejbPart/GenreBean!com.netcracker.ejb.entity.GenreHome");
@@ -56,7 +58,7 @@ public class TestServlet extends HttpServlet {
 
 
             String res = book.getGenre().getName();*/
-            out.println("<strong>Deleted</strong>");
+            out.println("<strong>Added</strong>");
 
 
             /*Collection<ThinEntityWrapper> books = service.getBooksShortInfo(-1, -1);
@@ -67,14 +69,14 @@ public class TestServlet extends HttpServlet {
 
         } catch (NamingException e) {
             throw new ServletException(e);
-        } catch (DataAccessException e) {
+        } /*catch (DataAccessException e) {
             throw new ServletException(e);
         } catch (FinderException e) {
             throw new ServletException(e);
-        }/* catch (CreateException e) {
+        }*/ catch (CreateException e) {
             throw new ServletException(e);
-        }*/ catch (RemoveException e) {
+        } /*catch (RemoveException e) {
             throw new ServletException(e);
-        }
+        }*/
     }
 }

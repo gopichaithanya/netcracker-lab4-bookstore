@@ -123,7 +123,7 @@ public class PublisherBean implements EntityBean {
         final String sqlQuery = "INSERT INTO publishers (publishName, publishUrl) VALUES (?, ?)";
 
         try {
-            int newPublisherId = DBUtils.executeInsert(getConnection(), sqlQuery, new Object[] {publisherName, publisherURL});
+            int newPublisherId = DBUtils.executeInsert(getConnection(), sqlQuery, new Object[] {publisherName, publisherURL}, true);
             this.publisherId = newPublisherId;
 
             // If creation procedure has been performed successfully
