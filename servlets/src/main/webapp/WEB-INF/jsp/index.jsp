@@ -87,13 +87,13 @@
             <%--Show selected author--%>
             <span style="text-decoration: underline">Author</span>
             <span style="font-family: cursive;">
-                <c:out value="${selAuthor.authorFirstName} ${selAuthor.authorLastName}"/>
+                <%--<c:out value="${selAuthor.getFirstName()}"/>--%>
             </span> &middot;
 
             <%--Show selected genre--%>
             <span style="text-decoration: underline">Genre</span>
             <span style="font-family: cursive;">
-                <c:out value="${selGenre.genreName}"/>
+                <%--<c:out value="${selGenre.info}"/>--%>
             </span>
         </h3>
 

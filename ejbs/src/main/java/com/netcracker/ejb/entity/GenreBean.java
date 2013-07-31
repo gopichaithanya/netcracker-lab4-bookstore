@@ -107,7 +107,7 @@ public class GenreBean implements EntityBean {
         final String sqlQuery = "INSERT INTO genres (name) VALUES (?)";
 
         try {
-            int newGenreId = DBUtils.executeInsert(getConnection(), sqlQuery, new Object[] {genreName});
+            int newGenreId = DBUtils.executeInsert(getConnection(), sqlQuery, new Object[] {genreName}, true);
             this.genreId = newGenreId;
 
             // If creation procedure has been performed successfully

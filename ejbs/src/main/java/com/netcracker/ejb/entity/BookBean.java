@@ -311,7 +311,7 @@ public class BookBean implements EntityBean {
 
         try {
             int newBookId = DBUtils.executeInsert(getConnection(), sqlQuery,
-                                                  new Object[] {title, publishId, genreId, description, imgRef, year});
+                                                  new Object[] {title, publishId, genreId, description, imgRef, year}, true);
             this.bookId = newBookId;
 
             // If creation procedure has been performed successfully
@@ -332,44 +332,33 @@ public class BookBean implements EntityBean {
             throws CreateException {}
 
 
-    public Integer ejbCreate(String title, int publishId, int genreId, String description, String imgRef, int year, Collection<Integer> authorsId) throws CreateException {
+    public Integer ejbCreate(String title, int publishId, int genreId, String description, String imgRef, int year, Collection<Integer> authorsIds) throws CreateException {
         this.title = title;
         this.publishId = publishId;
         this.genreId = genreId;
         this.description = description;
         this.imgRef = imgRef;
         this.year = year;
-        this.authorIds = authorsId;
+        this.authorIds = authorsIds;
 
         final String sqlQuery1 = "INSERT INTO books (title, publishId, genreId, descript, imgRef, year) VALUES (?,?,?,?,?,?)";
         final String sqlQuery2 = "INSERT INTO balink (authorId, bookId) VALUES (?,?)";
 
         try {
             int newBookId = DBUtils.executeInsert(getConnection(), sqlQuery1,
-                    new Object[] {title, publishId, genreId, description, imgRef, year});
+                    new Object[] {title, publishId, genreId, description, imgRef, year}, true);
             this.bookId = newBookId;
 
-
-
-            Collection<Integer> newBalinkInsertRes = new ArrayList<Integer>();
-
-            for (Integer author: authorsId) {
-                newBalinkInsertRes.add(DBUtils.executeInsert(getConnection(), sqlQuery2,
-                        new Object[]{bookId, author}));
-
+            for (Integer author: authorsIds) {
+                DBUtils.executeInsert(getConnection(), sqlQuery2, new Object[]{author, bookId}, false);
             }
-            // If creation procedure has been performed successfully
-            if (newBalinkInsertRes.isEmpty()) {
-                throw new CreateException("Unsuccessful book creation");
-            }
+
             // If creation procedure has been performed successfully
             if (newBookId != 0) {
                 return new Integer(newBookId);
             } else {
                 throw new CreateException("Unsuccessful book creation");
             }
-
-
         } catch (SQLException e) {
             throw new EJBException("Can't create BookBean bean due to the errors during the work with database", e);
         } catch (NamingException e) {
