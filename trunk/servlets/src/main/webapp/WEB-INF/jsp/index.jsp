@@ -109,8 +109,8 @@
                             ${book.info}<br>
                             <a href="showMore?bookId=${book.id}">ShowMore</a><br>
                             <c:if test="${not empty sessionScope.authorize}">
-                                <a href="modifyBook?bookId=${book.id}">Modificate</a><br>
-                                <a href="deleteBook?bookId=${book.id}">Delete</a>
+                                <a href="modify?bookId=${book.id}">Modificate</a><br>
+                                <a href="delete?bookId=${book.id}">Delete</a>
                             </c:if>
                         </td>
                     </tr>

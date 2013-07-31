@@ -9,10 +9,14 @@ import javax.ejb.CreateException;
 import javax.ejb.EJBHome;
 import javax.ejb.FinderException;
 import java.rmi.RemoteException;
+import java.util.Collection;
 
 public interface BookHome extends EJBHome {
 
     public Book create(String title, int publishId, int genreId, String description, String imgRef, int year)
+            throws CreateException, RemoteException;
+
+    public Book create(String title, int publishId, int genreId, String description, String imgRef, int year, Collection<Integer> authorsId)
             throws CreateException, RemoteException;
 
 

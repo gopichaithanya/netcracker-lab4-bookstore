@@ -67,8 +67,8 @@ public class GenreBean implements EntityBean {
         return genreId;
     }
 
-    public String getGenreName() {
-        System.out.println("-------[GenreBean] getGenreName");
+    public String getName() {
+        System.out.println("-------[GenreBean] getName");
         return genreName;
     }
 

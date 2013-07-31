@@ -114,5 +114,19 @@
             </resource-ref>
         </session>
 
+        <session>
+            <ejb-name>UserAuthorizationService</ejb-name>
+            <home>com.netcracker.ejb.session.UserAuthorizationServiceHome</home>
+            <remote>com.netcracker.ejb.session.UserAuthorizationService</remote>
+            <ejb-class>com.netcracker.ejb.session.UserAuthorizationServiceBean</ejb-class>
+            <session-type>Stateless</session-type>
+            <resource-ref>
+                <description>Reference to the bookstore database</description>
+                <res-ref-name>datasources/booksStoreDB</res-ref-name>
+                <res-auth>Container</res-auth>
+                <mapped-name>java:jboss/datasources/bookStoreDB</mapped-name>
+            </resource-ref>
+        </session>
+
     </enterprise-beans>
 </ejb-jar>

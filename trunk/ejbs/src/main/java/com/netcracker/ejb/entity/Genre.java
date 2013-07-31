@@ -5,5 +5,5 @@ import java.rmi.RemoteException;
 
 public interface Genre extends EJBObject {
     public int getGenreId() throws RemoteException;
-    public String getGenreName() throws RemoteException;
+    public String getName() throws RemoteException;
 }

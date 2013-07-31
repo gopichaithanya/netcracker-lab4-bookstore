@@ -93,6 +93,10 @@ public class BookBean implements EntityBean {
 
 
 
+    public void remove() throws RemoveException {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
     public int getBookId() {
         return bookId;
     }
@@ -304,6 +308,7 @@ public class BookBean implements EntityBean {
 
         final String sqlQuery = "INSERT INTO books (title, publishId, genreId, descript, imgRef, year) VALUES (?,?,?,?,?,?)";
 
+
         try {
             int newBookId = DBUtils.executeInsert(getConnection(), sqlQuery,
                                                   new Object[] {title, publishId, genreId, description, imgRef, year});
@@ -322,9 +327,59 @@ public class BookBean implements EntityBean {
         }
     }
 
+
     public void ejbPostCreate(String title, int publishId, int genreId, String description, String imgRef, int year)
             throws CreateException {}
 
+
+    public Integer ejbCreate(String title, int publishId, int genreId, String description, String imgRef, int year, Collection<Integer> authorsId) throws CreateException {
+        this.title = title;
+        this.publishId = publishId;
+        this.genreId = genreId;
+        this.description = description;
+        this.imgRef = imgRef;
+        this.year = year;
+        this.authorIds = authorsId;
+
+        final String sqlQuery1 = "INSERT INTO books (title, publishId, genreId, descript, imgRef, year) VALUES (?,?,?,?,?,?)";
+        final String sqlQuery2 = "INSERT INTO balink (authorId, bookId) VALUES (?,?)";
+
+        try {
+            int newBookId = DBUtils.executeInsert(getConnection(), sqlQuery1,
+                    new Object[] {title, publishId, genreId, description, imgRef, year});
+            this.bookId = newBookId;
+
+
+
+            Collection<Integer> newBalinkInsertRes = new ArrayList<Integer>();
+
+            for (Integer author: authorsId) {
+                newBalinkInsertRes.add(DBUtils.executeInsert(getConnection(), sqlQuery2,
+                        new Object[]{bookId, author}));
+
+            }
+            // If creation procedure has been performed successfully
+            if (newBalinkInsertRes.isEmpty()) {
+                throw new CreateException("Unsuccessful book creation");
+            }
+            // If creation procedure has been performed successfully
+            if (newBookId != 0) {
+                return new Integer(newBookId);
+            } else {
+                throw new CreateException("Unsuccessful book creation");
+            }
+
+
+        } catch (SQLException e) {
+            throw new EJBException("Can't create BookBean bean due to the errors during the work with database", e);
+        } catch (NamingException e) {
+            throw new EJBException("Can't lookup datasource object", e);
+        }
+    }
+
+    public void ejbPostCreate(String title, int publishId, int genreId, String description, String imgRef, int year, Collection<Integer> authorId) throws CreateException {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
 
     public void ejbRemove() throws RemoveException {
         Integer bookId = (Integer) context.getPrimaryKey();
@@ -345,9 +400,9 @@ public class BookBean implements EntityBean {
         }
     }
 
+
+
     //--------------------------------------------------------------------------------------------------------------
-
-
 
     //----------------------------------------- Bean's life cycle methods -------------------------------------------
 
@@ -395,6 +450,8 @@ public class BookBean implements EntityBean {
         }
     }
 
+
+
     /**
      * Returns list of authors IDs which wrote the book with given "bookId" ID.
      *
@@ -409,8 +466,6 @@ public class BookBean implements EntityBean {
         Map<String, List> queryRes = DBUtils.executeSelect(getConnection(), sqlQuery, new Object[]{bookId}, new int[]{});
         return (List<Integer>)(queryRes.get("1"));
     }
-
-
 
     public void ejbStore() throws EJBException {
         System.out.println("---------[Book] ejbStore()");
@@ -457,6 +512,4 @@ public class BookBean implements EntityBean {
             throw new EJBException("Can't lookup bean with class " + homeClass.getName());
         }
     }
-
-
 }

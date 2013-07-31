@@ -20,17 +20,14 @@ public class AddPublisher extends HttpServlet {
 
     private static final Logger log = Logger.getLogger(AddPublisher.class);
 
-    private String name;
-    private String url;
-
     private PublisherHome publisherHome;
 
 
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             Context ctx = Helper.getInstance().getContext();
-            name = req.getParameter("name");
-            url = req.getParameter("url");
+            String name = req.getParameter("name");
+            String url = req.getParameter("url");
             Object obj = ctx.lookup("ear-1.0/ejbPart/PublisherBean!com.netcracker.ejb.entity.PublisherHome");
             publisherHome = (PublisherHome) PortableRemoteObject.narrow(obj, PublisherHome.class);
             if (isPublisherExist(name, url)) {
@@ -53,11 +50,10 @@ public class AddPublisher extends HttpServlet {
 
             }
         } catch (CreateException e) {
-            log.error("Error occurs during adding publisher to the database", e);
-            throw new ServletException(e);
+            throw new ServletException("Can't retrieve Publisher bean", e);
         } catch (NamingException e) {
-            log.error("Error occurs during adding publisher to the database", e);
-            throw new ServletException(e);
+            log.error("Can't lookup Publisher bean", e);
+            throw new ServletException("Can't lookup Publisher bean", e);
         }
 
     }
@@ -77,14 +73,15 @@ public class AddPublisher extends HttpServlet {
             publisherExist = publisherHome.isPublisherExist(name, url);
 
         } catch (RemoteException e) {
-            log.error("Error occurs during finding out is publisher exist in the database", e);
-            throw new ServletException(e);
+            log.error("Error occurs during the call of the remote method.", e);
+            throw new ServletException("Error occurs during the call of the remote method.", e);
         } catch (DataAccessException e) {
-            log.error("Error occurs during finding out is publisher exist in the database", e);
-            throw new ServletException(e);
+            log.error("Error occurs during work with database", e);
+            throw new ServletException("Errors occurs during the work with database", e);
         }
         return publisherExist;
     }
+
 
     private boolean isPublisherValid(String name, String url) {
         return !(name.isEmpty()

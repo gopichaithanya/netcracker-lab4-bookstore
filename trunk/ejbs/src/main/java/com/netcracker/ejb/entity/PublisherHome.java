@@ -13,7 +13,7 @@ import java.util.List;
 
 public interface PublisherHome extends EJBHome {
 
-    public Publisher create(String genreName, String publisherURL) throws RemoteException, CreateException;
+    public Publisher create(String publisherName, String publisherURL) throws RemoteException, CreateException;
 
     public Publisher findByPrimaryKey(Integer publisherPk) throws RemoteException, FinderException, DataAccessException;
 

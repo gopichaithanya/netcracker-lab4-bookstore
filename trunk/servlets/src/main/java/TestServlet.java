@@ -55,7 +55,7 @@ public class TestServlet extends HttpServlet {
             book.setGenre(genre);
 
 
-            String res = book.getGenre().getGenreName();*/
+            String res = book.getGenre().getName();*/
             out.println("<strong>Deleted</strong>");
 
 

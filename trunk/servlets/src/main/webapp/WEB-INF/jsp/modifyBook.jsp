@@ -33,7 +33,7 @@
             <table>
                 <tr>
                     <td>title:</td>
-                    <td><input type="text" name="title" ></td>
+                    <td><input type="text" name="title" value="${requestScope.book.title}" ></td>
                 </tr>
 
                 <%--List of all Publishers--%>
@@ -47,7 +47,6 @@
                                 </option>
                             </c:forEach>
                         </select>
-                        <a href="/bookStore/addPublisher"> Add new Publisher </a>
                     <td>
                 </tr>
 
@@ -64,7 +63,6 @@
                                 </option>
                             </c:forEach>
                         </select>
-                        <a href="/bookStore/addGenre"> Add new Genre </a>
                     <td>
                 </tr>
 
@@ -79,22 +77,20 @@
                                 </option>
                             </c:forEach>
                         </select>
-                        <a href="/bookStore/addAuthor">  Add new Author </a>
                     </td>
-
                 </tr>
 
 
                 <td>description:</td>
-                <td><textarea type="text" rows="10" cols="50" name="descript"></textarea></td>
+                <td><textarea type="text" rows="10" cols="50" name="descript" value="${requestScope.book.description}" ></textarea></td>
                 </tr>
                 <tr>
                     <td>image:</td>
-                    <td><input type="text" name="imgRef"></td>
+                    <td><input type="text" name="imgRef" value="${requestScope.book.imageReference}"></td>
                 </tr>
                 <tr>
                     <td>year:</td>
-                    <td><input type="number" name="year" ></td>
+                    <td><input type="number" name="year" value="${requestScope.book.year}" ></td>
                 </tr>
             </table>
             <br>
