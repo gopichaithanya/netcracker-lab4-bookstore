@@ -1,6 +1,5 @@
 package com.netcracker.servlets;
 
-import com.netcracker.ejb.session.BookSearchServiceHome;
 import com.netcracker.ejb.session.UserAuthorizationService;
 import com.netcracker.ejb.session.UserAuthorizationServiceHome;
 import com.netcracker.exceptions.DataAccessException;
@@ -24,15 +23,6 @@ public class Authorization extends HttpServlet {
 
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try{
-
-            /**
-             * //--------------------------------------------------
-             final String bookJNDI = "ear-1.0/ejbPart/BookSearchService!com.netcracker.ejb.session.BookSearchServiceHome";
-             Object obj3 = Helper.getInstance().getContext().lookup(bookJNDI);
-             BookSearchServiceHome booksService = (BookSearchServiceHome) PortableRemoteObject.narrow(obj3, BookSearchServiceHome.class);
-             BookSearchService bookSearchService = booksService.create();
-             //--------------------------------------------------
-             */
 
             //--------------------------------------------------
             final String bookJNDI = "ear-1.0/ejbPart/UserAuthorizationService!com.netcracker.ejb.session.UserAuthorizationServiceHome";
@@ -66,10 +56,11 @@ public class Authorization extends HttpServlet {
                 session.setAttribute("error", false);
             }
         } catch (CreateException e) {
-            throw new ServletException("Error occurs during creating userAuthorizationService session bean. ", e);
+            throw new ServletException("Can't retrieve UserAuthorizationService bean", e);
         } catch (NamingException e) {
             throw new ServletException("Error occurs during lookup UserAuthorizationService bean.", e);
         } catch (DataAccessException e) {
+            log.error("Error occurs during work with database", e);
             throw new ServletException("Error occurs during the work with datasource. ", e);
         }
 

@@ -9,9 +9,9 @@ import java.rmi.RemoteException;
  */
 public interface Author extends EJBObject {
 
-    public String getAuthorFirstName() throws RemoteException;
+    public String getFirstName() throws RemoteException;
 
-    public String getAuthorLastName() throws RemoteException;
+    public String getLastName() throws RemoteException;
 
     public int getAuthorId() throws RemoteException;
 

@@ -52,6 +52,10 @@ public class MainPageHandler extends HttpServlet {
             req.setAttribute("authorsList", authorHome.getAuthorsInfo());
             req.setAttribute("genresList", genreHome.getGenresInfo());
 
+            // Resetting for correct reference to author creating
+            session.setAttribute("fromAddBookPage", false);
+
+
             // Handling button's actions that were clicked on the main page (authors and genres lists)
             /*
              * Parse information about selected author

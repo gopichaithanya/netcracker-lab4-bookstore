@@ -13,6 +13,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.rmi.RemoteException;
 
@@ -20,17 +21,14 @@ public class AddAuthor extends HttpServlet {
 
     private static final Logger log = Logger.getLogger(AddAuthor.class);
 
-    private String firstName;
-    private String lastName;
-
     private AuthorHome authorHome;
 
 
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             Context ctx = Helper.getInstance().getContext();
-            firstName = req.getParameter("firstName");
-            lastName = req.getParameter("lastName");
+            String firstName = req.getParameter("firstName");
+            String lastName = req.getParameter("lastName");
             Object obj = ctx.lookup("ear-1.0/ejbPart/AuthorBean!com.netcracker.ejb.entity.AuthorHome");
             authorHome = (AuthorHome) PortableRemoteObject.narrow(obj, AuthorHome.class);
             if (isAuthorExist(firstName, lastName, req)) {
@@ -43,21 +41,24 @@ public class AddAuthor extends HttpServlet {
                 req.setAttribute("error", false);
             } else {
                 authorHome.create(firstName, lastName);
-                log.info("Author  " + firstName + " " + lastName+ " successfully added.");
+                log.info("Author  " + firstName + " " + lastName + " successfully added.");
 
-                if ((Boolean)req.getSession().getAttribute("fromAddBookPage")) {
-                     resp.sendRedirect("http://localhost:8080/bookStore/addBook");
-                } else {
-                    req.getServletContext().getRequestDispatcher("/books").forward(req, resp);
+                if (req.getSession().getAttribute("fromAddBookPage") == null || !((Boolean) req.getSession().getAttribute("fromAddBookPage") )) {
+                    resp.sendRedirect("http://localhost:8080/bookStore/books");
+                } else if ((Boolean)req.getSession().getAttribute("fromAddBookPage"))
+                {
+                    HttpSession session = req.getSession();
+                    session.setAttribute("fromAddBookPage", false);
+                    resp.sendRedirect("http://localhost:8080/bookStore/addBook");
                 }
 
             }
         } catch (CreateException e) {
-            log.error("Error occurs during adding author to the database", e);
-            throw new ServletException(e);
+            log.error("Error occurs during adding author to the database. Can't retrieve Author bean.", e);
+            throw new ServletException("Can't retrieve Author bean.", e);
         } catch (NamingException e) {
-            log.error("Error occurs during adding author to the database", e);
-            throw new ServletException(e);
+            log.error("Error occurs during adding author to the database. Can't lookup Author bean.", e);
+            throw new ServletException("Can't lookup Author bean.", e);
         }
 
     }
@@ -77,11 +78,11 @@ public class AddAuthor extends HttpServlet {
                 authorExist = authorHome.isAuthorExist(firstName, lastName);
 
         } catch (RemoteException e) {
-            log.error("Error occurs during finding out is author exist in the database", e);
-            throw new ServletException(e);
+            log.error("Error occurs during the call of the remote method.", e);
+            throw new ServletException("Error occurs during the call of the remote method.", e);
         } catch (FinderException e) {
-            log.error("Error occurs during finding out is author exist in the database", e);
-            throw new ServletException(e);
+            log.error("Error occurs during finding out is author exist in the database. Can't find EJB with specified primary key.", e);
+            throw new ServletException("Can't find EJB with specified primary key.",e);
         }
         return authorExist;
     }

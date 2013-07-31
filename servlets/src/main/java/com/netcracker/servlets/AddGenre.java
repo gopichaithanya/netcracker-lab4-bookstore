@@ -20,15 +20,13 @@ public class AddGenre extends HttpServlet {
 
     private static final Logger log = Logger.getLogger(AddGenre.class);
 
-    private String name;
-
     private GenreHome genreHome;
 
 
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             Context ctx = Helper.getInstance().getContext();
-            name = req.getParameter("name");
+            String name = req.getParameter("name");
             Object obj = ctx.lookup("ear-1.0/ejbPart/GenreBean!com.netcracker.ejb.entity.GenreHome");
             genreHome = (GenreHome) PortableRemoteObject.narrow(obj, GenreHome.class);
             if (isGenreExist(name)) {

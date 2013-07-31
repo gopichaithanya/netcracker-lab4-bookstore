@@ -32,13 +32,12 @@ public class AuthorBean implements EntityBean{
         return authorId;
     }
 
-
-    public String getAuthorFirstName() {
-        System.out.println("------- [Author] getAuthorFirstName");
-        return firstName;
+    public String getFirstName() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
-    public String getAuthorLastName() {
-        System.out.println("------- [Author] getAuthorLastName");
+
+    public String getLastName() {
+        System.out.println("------- [Author] getLastName");
         return lastName;
     }
 

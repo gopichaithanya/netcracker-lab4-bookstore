@@ -104,6 +104,24 @@
         <url-pattern>/find</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>deleteBook</servlet-name>
+        <servlet-class>com.netcracker.servlets.DeleteBookHandler</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>deleteBook</servlet-name>
+        <url-pattern>/delete</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>showMore</servlet-name>
+        <servlet-class>com.netcracker.servlets.ShowMoreHandler</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>showMore</servlet-name>
+        <url-pattern>/showMore</url-pattern>
+    </servlet-mapping>
+
 
 
     <servlet>
