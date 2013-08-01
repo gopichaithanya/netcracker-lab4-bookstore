@@ -33,7 +33,7 @@ public class AuthorBean implements EntityBean{
     }
 
     public String getFirstName() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return firstName;
     }
 
     public String getLastName() {
