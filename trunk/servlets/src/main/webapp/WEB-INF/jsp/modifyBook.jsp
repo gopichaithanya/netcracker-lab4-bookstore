@@ -82,7 +82,7 @@
 
 
                 <td>description:</td>
-                <td><textarea type="text" rows="10" cols="50" name="descript" value="${requestScope.book.description}" ></textarea></td>
+                <td><textarea type="text" rows="10" cols="50" name="descript" >${requestScope.book.description}</textarea></td>
                 </tr>
                 <tr>
                     <td>image:</td>
@@ -94,7 +94,7 @@
                 </tr>
             </table>
             <br>
-            <input type="submit" value="Add Book">
+            <input type="submit" value="Modify">
             <input type="reset" value="Reset" style="margin-left: 10px">
         </FORM>
     </div>

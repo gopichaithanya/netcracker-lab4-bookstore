@@ -23,7 +23,7 @@
             <li><a href="addAuthor">Add author</a></li>
             <li><a href="deleteAuthor">Delete author</a></li>
             <li><a href="auth">Authorization</a></li>
-            <li><a href="">About</a></li>
+            <%--<li><a href="">About</a></li>--%>
         </ul>
     </div>
 
@@ -87,13 +87,13 @@
             <%--Show selected author--%>
             <span style="text-decoration: underline">Author</span>
             <span style="font-family: cursive;">
-                <%--<c:out value="${selAuthor.getFirstName()}"/>--%>
+                <c:out value="${selAuthor.firstName} ${selAuthor.lastName}"/>
             </span> &middot;
 
             <%--Show selected genre--%>
             <span style="text-decoration: underline">Genre</span>
             <span style="font-family: cursive;">
-                <%--<c:out value="${selGenre.info}"/>--%>
+                <c:out value="${selGenre.name}"/>
             </span>
         </h3>
 

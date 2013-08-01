@@ -14,12 +14,12 @@
 <body>
 
 <div id="header">
-    <h1><a href="bookStore">Books Store WEB site</a></h1>
+    <h1><a href="books">Books Store WEB site</a></h1>
 </div>
 
 <div id="navigation">
     <ul>
-        <li><a href="/books">Home</a></li>
+        <li><a href="/bookStore/books">Home</a></li>
     </ul>
 </div>
 

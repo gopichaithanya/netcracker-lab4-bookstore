@@ -49,11 +49,11 @@ public class Authorization extends HttpServlet {
                 log.info("User " + req.getParameter("nick") + " entered to the bookstore.");
                 resp.sendRedirect("/bookStore/books");
             } else {
-                session.setAttribute("error", true);
                 log.warn("User with nickname " + req.getParameter("nick") + " not registered.");
-                req.getServletContext().getRequestDispatcher("/WEB-INF/authorization.jsp").forward(req, resp);
+                req.setAttribute("error", true);
+                doGet(req, resp);
+                req.setAttribute("error", false);
                 //erase error massage flag
-                session.setAttribute("error", false);
             }
         } catch (CreateException e) {
             throw new ServletException("Can't retrieve UserAuthorizationService bean", e);
