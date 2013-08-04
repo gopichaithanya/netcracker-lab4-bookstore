@@ -4,6 +4,7 @@ package com.netcracker.ejb.entity;
 
 
 import com.netcracker.exceptions.DataAccessException;
+import com.netcracker.helper.ThinEntityWrapper;
 
 import javax.ejb.CreateException;
 import javax.ejb.EJBHome;
@@ -23,27 +24,4 @@ public interface BookHome extends EJBHome {
     public Book findByPrimaryKey(Integer authorPk)
             throws DataAccessException, FinderException, RemoteException;
 
-    /*
-    public Book findByAuthorAndGenreIDs(int authorId, int genreId)
-            throws DataAccessException, FinderException, RemoteException;
-
-    public Collection findByAuthorID(int authorId)
-            throws DataAccessException, FinderException, RemoteException;
-
-    public Collection findByGenreID(int genreId)
-            throws DataAccessException, FinderException, RemoteException;
-    */
-
-
-    //----------------------------- Home business methods -----------------------------
-
-    /*
-    public Collection<ThinEntityWrapper> getBooksInfo()
-            throws RemoteException, DataAccessException;
-
-    public List getBooksAmount()
-            throws RemoteException, DataAccessException;
-    */
-
-    //---------------------------------------------------------------------------------
 }

@@ -96,11 +96,11 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>findBook</servlet-name>
+        <servlet-name>FindBook</servlet-name>
         <servlet-class>com.netcracker.servlets.FindBook</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>findBook</servlet-name>
+        <servlet-name>FindBook</servlet-name>
         <url-pattern>/find</url-pattern>
     </servlet-mapping>
 
