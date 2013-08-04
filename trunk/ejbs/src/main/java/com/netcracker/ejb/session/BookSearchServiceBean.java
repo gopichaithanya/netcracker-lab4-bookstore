@@ -46,6 +46,29 @@ public class BookSearchServiceBean implements SessionBean {
         }
     }
 
+
+
+    public Collection<ThinEntityWrapper> getBookInfoBySearchCriteria(String title, String author, int publisherId,
+                                                                     int genreId, int year)
+            throws DataAccessException {
+
+        try {
+            List<ThinEntityWrapper> books = new ArrayList<ThinEntityWrapper>();
+
+            Set<Integer> byTitleAndYear = findBooksByTitleAndYear(title, year);
+            Set<Integer> byGenreAndPublisher = findBooksByGenreAndPublisher(genreId, publisherId);
+            Set<Integer> byAuthor = findBooksByAuthor(author);
+
+            // Intersect all the fetched results to determine the common elements among the three sets
+            byTitleAndYear.retainAll(byGenreAndPublisher);
+            byTitleAndYear.retainAll(byAuthor);
+            return getBooksInfo(byTitleAndYear);
+
+        } catch (SQLException e) {
+            throw new DataAccessException("Error occurs during the work with database", e);
+        }
+    }
+
     //-----------------------------------------------------------------------------------------------------
 
     //----------------------------------------- Life cycle methods ----------------------------------------
@@ -209,6 +232,116 @@ public class BookSearchServiceBean implements SessionBean {
         }
         return result;
     }
+
+    //-----------------------------------------------------------------------------------------------------
+    /**
+     * Retrieve set of book's ids that satisfy the title and year criteria.
+     *
+     * @param title         book's title
+     * @param year          book's year
+     * @return              found book's ids
+     *
+     * @throws SQLException an exception that provides information on a database access error or other errors
+     */
+    private Set<Integer> findBooksByTitleAndYear(String title, int year) throws SQLException {
+        try {
+            String sqlQuery = null;
+            List bookIds;
+            // If year parameter is specified by the user find books by title and year
+            if (year >= 0) {
+                sqlQuery = "select booksId from books where (title like ?) and (books.year = ?)";
+                bookIds = DBUtils.executeSelect(getConnection(), sqlQuery, new Object[]{"%" + title + "%", year},
+                                                new int[]{}).get("1");
+            } else {
+                sqlQuery = "select booksId from books where title like ?";
+                bookIds = DBUtils.executeSelect(getConnection(), sqlQuery, new Object[]{"%" + title + "%"},
+                                                new int[]{}).get("1");
+            }
+
+            return new HashSet<Integer>(bookIds);
+        } catch(NamingException e) {
+            throw new EJBException("Can't lookup datasource object", e);
+        }
+    }
+
+    private Set<Integer> findBooksByGenreAndPublisher(int genreId, int publisherId) throws SQLException {
+        try {
+            String sqlQuery = null;
+            List bookIds;
+
+            if (genreId >= 0 && publisherId < 0) {
+                sqlQuery = "select booksId from books where genreId = ?";
+                bookIds = DBUtils.executeSelect(getConnection(), sqlQuery, new Object[]{genreId}, new int[]{}).get("1");
+            } else if (genreId < 0 && publisherId >=0) {
+                sqlQuery = "select booksId from books where publishId = ?";
+                bookIds = DBUtils.executeSelect(getConnection(), sqlQuery, new Object[]{publisherId}, new int[]{}).get("1");
+            } else if (genreId >= 0 && publisherId >= 0) {
+                sqlQuery = "select booksId from books where genreId = ? and publishId = ?";
+                bookIds = DBUtils.executeSelect(getConnection(), sqlQuery, new Object[]{genreId, publisherId}, new int[]{}).get("1");
+            } else {
+                sqlQuery = "select booksId from books";
+                bookIds = DBUtils.executeSelect(getConnection(), sqlQuery, new Object[]{}, new int[]{}).get("1");
+            }
+
+            return new HashSet<Integer>(bookIds);
+        } catch(NamingException e) {
+            throw new EJBException("Can't lookup datasource object", e);
+        }
+    }
+
+
+    private Set<Integer> findBooksByAuthor(String author) throws SQLException{
+        try {
+            String sqlQuery = "SELECT ba.bookId FROM balink ba, authors aut " +
+                              "WHERE ba.authorId = aut.authorId AND CONCAT(firstName, lastName) LIKE ?";
+            List bookIds = DBUtils.executeSelect(getConnection(), sqlQuery, new Object[]{"%" + author + "%"}, new int[]{}).get("1");
+
+            return new HashSet<Integer>(bookIds);
+        } catch(NamingException e) {
+            throw new EJBException("Can't lookup datasource object", e);
+        }
+    }
+
+
+    private Collection<ThinEntityWrapper> getBooksInfo(Collection<Integer> bookIds) throws DataAccessException {
+        List<ThinEntityWrapper> result = new ArrayList<ThinEntityWrapper>();
+        if (bookIds == null || bookIds.size() == 0) {
+            return result;
+        }
+
+        StringBuilder sqlQuery = new StringBuilder("SELECT booksId, title, imgref FROM books WHERE booksId in (");
+
+        try {
+            for (Iterator<Integer> ids = bookIds.iterator(); ;ids.hasNext()) {
+                sqlQuery.append(ids.next().intValue());
+                if (ids.hasNext()) {
+                    sqlQuery.append(", ");
+                } else {
+                    sqlQuery.append(")");
+                    break;
+                }
+            }
+
+            Map<String, List> booksInfo = DBUtils.executeSelect(getConnection(), sqlQuery.toString(), new Object[]{}, new int[]{});
+
+            Iterator<Integer> idsIter = booksInfo.get("1").iterator();
+            Iterator<String> titlesIter = booksInfo.get("2").iterator();
+            Iterator<String> imgRefsIter = booksInfo.get("3").iterator();
+
+            // Filling the result
+            while (idsIter.hasNext() && titlesIter.hasNext()) {
+                String imgRef = imgRefsIter.hasNext() ? imgRefsIter.next() : "";
+                result.add(new ThinEntityWrapper(idsIter.next().toString(), titlesIter.next().toString(), imgRef));
+            }
+
+            return result;
+        } catch (SQLException e) {
+            throw new DataAccessException("Error occurs during the work with database", e);
+        } catch (NamingException e) {
+            throw new EJBException("Can't lookup datasource object", e);
+        }
+    }
+    //-----------------------------------------------------------------------------------------------------
     //-----------------------------------------------------------------------------------------------------
 
 }

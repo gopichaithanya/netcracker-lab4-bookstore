@@ -11,8 +11,7 @@
 <h1>Search Books Service</h1>
 <h3><i>Enter please search criteria</i></h3>
 
-
-<c:if test="${not empty requestScope.errors}">
+<%--<c:if test="${not empty requestScope.errors}">
     <div id="errors">
         <ul>
             <c:forEach items="${requestScope.errors}" var="error">
@@ -20,49 +19,48 @@
             </c:forEach>
         </ul>
     </div>
-</c:if>
-
+</c:if>--%>
 
 <div id="searchBar">
     <table>
         <thead>
-        <tr>
-            <th>Title</th>
-            <th>Author</th>
-            <th>Publisher</th>
-            <th>Genre</th>
-            <th>Year</th>
-        </tr>
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Publisher</th>
+                <th>Genre</th>
+                <th>Year</th>
+            </tr>
         </thead>
         <tbody>
-        <form method="post" action="/searchBooks">
-            <tr>
-                <td><input type="text" name="title" value="${requestScope.validParams.title}"></td>
-                <td><input type="text" name="author" value="${requestScope.validParams.author}"></td>
-                <td><input type="text" name="publisher" value="${requestScope.validParams.publisher}"></td>
-                <td>
-                    <select name="genre" size="1">
-                        <option value="any">Any</option>
-                        <c:forEach items="${requestScope.genres}" var="genre">
-                            <c:choose>
-                                <c:when test="${genre.genreName eq requestScope.validParams.genre}">
-                                    <option value="${genre.genreName}" selected="">${genre.genreName}</option>
-                                </c:when>
-                                <c:otherwise>
-                                    <option value="${genre.genreName}">${genre.genreName}</option>
-                                </c:otherwise>
-                            </c:choose>
-                        </c:forEach>
-                    </select>
-                </td>
-                <td><input type="text" name="year" size="5"></td>
-            </tr>
-            <tr>
-                <td><button type="submit">Find</button></td>
-                <td><button type="reset">Reset</button></td>
-            </tr>
-        </form>
-
+            <form method="post" action="find">
+                <tr>
+                    <td><input type="text" name="title"></td>
+                    <td><input type="text" name="author"></td>
+                    <%--<td><input type="text" name="publisher"></td>--%>
+                    <td>
+                        <select name="publisher" size="1">
+                            <option value="-1">Any</option>
+                            <c:forEach items="${requestScope.publishers}" var="publish">
+                                <option value="${publish.id}">${publish.info}</option>
+                            </c:forEach>
+                        </select>
+                    </td>
+                    <td>
+                        <select name="genre" size="1">
+                            <option value="-1">Any</option>
+                            <c:forEach items="${requestScope.genres}" var="genre">
+                                <option value="${genre.id}">${genre.info}</option>
+                            </c:forEach>
+                        </select>
+                    </td>
+                    <td><input type="number" pattern="[1-9][0-9]{0,8}" min="0" name="year" size="5"></td>
+                </tr>
+                <tr>
+                    <td><button type="submit">Find</button></td>
+                    <td><button type="reset">Reset</button></td>
+                </tr>
+            </form>
         </tbody>
     </table>
 </div>
@@ -75,7 +73,7 @@
 </c:if>
 
 
-<c:if test="${param.title != null}">
+<%--<c:if test="${param.title != null}">
     <div id="searchRequest">
         <ul>
             <li>Title: <span>${param.title}</span></li>
@@ -85,23 +83,24 @@
             <li>Year: <span>${param.year}</span></li>
         </ul>
     </div>
-</c:if>
+</c:if>--%>
 
 
 <c:if test="${not empty searchResults}">
     <div id="searchResults">
         <table>
             <tbody>
-            <h3>There are
+            <h3>
+                There are
                 <span style="color: red; text-decoration: underline">${fn:length(requestScope.searchResults)}</span>
                 results that match the search criteria
             </h3>
             <c:forEach items="${requestScope.searchResults}" var="book">
                 <tr>
-                    <td class="imgCol"><img src="/images/${book.imgRef}"/></td>
+                    <td class="imgCol"><img src="images/${book.addInfo}"/></td>
                     <td class="dataCol">
-                            ${book.title}<br>
-                        <a href="/showMore?bookId=${book.bookId}">ShowMore</a><br>
+                        ${book.info}<br>
+                        <a href="showMore?bookId=${book.id}">ShowMore</a><br>
                             <%--<a href="/modifyBook?bookId=${book.bookId}">Modif</a>--%>
                     </td>
                 </tr>

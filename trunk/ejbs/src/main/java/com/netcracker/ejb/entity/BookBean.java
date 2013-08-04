@@ -56,36 +56,6 @@ public class BookBean implements EntityBean {
     private int year;
 
     //---------------------------------- Home business methods -------------------------------------------
-    public Collection<ThinEntityWrapper> ejbHomeGetBooksInfo() throws DataAccessException {
-        List<ThinEntityWrapper> result = new ArrayList<ThinEntityWrapper>();
-        String sql = "SELECT booksId, title, imgRef from books";
-        try {
-            Map<String, List> genresDescription = DBUtils.executeSelect(getConnection(), sql, new Object[]{}, new int[]{});
-            // Retrieve columns values
-            //Iterator<List> mapValuesIter = genresDescription.values().iterator();
-            // First column
-            List ids = genresDescription.get("1");//mapValuesIter.next();
-            Iterator idsIter = ids.iterator();
-            // Second column
-            List titles = genresDescription.get("2");//mapValuesIter.next();
-            Iterator titlesIter = titles.iterator();
-            //Third column
-            List imgRefs = genresDescription.get("3");
-            Iterator imgsIter = imgRefs.iterator();
-
-            // Filling the result
-            while (idsIter.hasNext() && titlesIter.hasNext()) {
-                String imgRef = imgsIter.hasNext() ? (String)(imgsIter.next()) : "";
-                result.add(new ThinEntityWrapper(idsIter.next().toString(), titlesIter.next().toString(), imgRef));
-            }
-
-            return result;
-        } catch (SQLException e) {
-            throw new DataAccessException("Error occurs during the work with database", e);
-        } catch (NamingException e) {
-            throw new DataAccessException("Can't lookup datasource object", e);
-        }
-    }
     //----------------------------------------------------------------------------------------------------
 
 
@@ -234,63 +204,6 @@ public class BookBean implements EntityBean {
             throw new EJBException("Can't lookup datasource object", e);
         }
     }
-
-    // Not used
-    public Integer ejbFindByAuthorAndGenreIDs(int authorId, int genreId) throws DataAccessException, FinderException {
-       /* System.out.println("---------[Book] ejbFindByAuthorAndGenreIDs()");
-        final StringBuilder sqlQuery = new StringBuilder()
-                                            .append("SELECT bks.booksId")
-                                            .append("   FROM books bks")
-                                            .append("   JOIN balink bl")
-                                            .append("       ON (bks.booksId = bl.bookId and bks.genreId = 2355)")
-                                            .append("   JOIN authors ath")
-                                            .append("       ON (bl.authorId = ath.authorId and ath.authorId = 1310)");
-        try {
-            Integer bookPk = (Integer)(DBUtils.executeSelectSingle(getConnection(), sqlQuery.toString(), new Object[]{}));
-            if (bookPk == null) {
-                *//*throw new FinderException("Book with specified search criteria authorId = " + authorId +
-                                          " and genreId = " + genreId + " doesn't exists");*//*
-            }
-            return bookPk;
-        } catch (SQLException e) {
-            throw new EJBException("Book EJB can't be find due to the errors during the work with database", e);
-        } catch (NamingException e) {
-            throw new EJBException("Can't lookup datasource object", e);
-        }*/
-        return null;
-    }
-    // Not used
-    public Collection ejbFindByAuthorID(int authorId) throws DataAccessException, FinderException {
-        System.out.println("---------[Book] ejbFindByAuthorID");
-        if (authorId < 0) {
-            throw new FinderException("authorId parameter must be a positive number");
-        }
-        final StringBuilder sqlQuery = new StringBuilder()
-                .append("SELECT bks.booksId")
-                .append("   FROM books bks")
-                .append("   JOIN balink bl")
-                .append("       ON (bks.booksId = bl.bookId)")
-                .append("   JOIN authors ath")
-                .append("       ON (bl.authorId = ath.authorId and ath.authorId = ?)");
-        try {
-               Map<String, List> columns = DBUtils.executeSelect(getConnection(), sqlQuery.toString(),
-                       new Object[]{authorId}, new int[]{1});
-
-            return columns.get("1");
-
-        } catch (SQLException e) {
-            throw new EJBException("Book EJBs which written by the author = " + authorId +
-                                   " can't be find due to the errors during the work with a database", e);
-        } catch (NamingException e) {
-            throw new EJBException("Can't lookup datasource object", e);
-        }
-
-    }
-    // Not used
-    public Collection ejbFindByGenreID(int genreId) throws DataAccessException, FinderException {
-        return Collections.emptyList();
-    }
-
     //--------------------------------------------------------------------------------------------------------------
 
 

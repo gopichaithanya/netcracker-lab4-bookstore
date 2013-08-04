@@ -20,16 +20,6 @@ public class UserAuthorizationServiceBean implements SessionBean{
     //------------------------------------------- Business methods ----------------------------------------
 
     public boolean isUserAuthorized(String nick, String pass, String status) throws DataAccessException {
-
-        /**
-         * users 	(	id int NOT NULL auto_increment,
-         nick varchar(50) NOT NULL,
-         password varchar(80) NOT NULL,
-         status varchar(50) NOT NULL,
-         CONSTRAINT usersId_pk PRIMARY KEY (id),
-         CONSTRAINT users_uk UNIQUE KEY (nick)
-         */
-
         final String sqlQuery = "SELECT id FROM users WHERE nick=? AND password=? AND status=?";
         try {
             Object result = DBUtils.executeSelectSingle(getConnection(), sqlQuery, new Object[]{nick, pass, status});
