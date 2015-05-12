@@ -1,0 +1,1 @@
+Simple web application with use MySQL database and such technologies as JSP, JSTL, EJB 2.1.
